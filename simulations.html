@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Learn - FinQuest</title>
+    <link rel="stylesheet" href="styles-main.css">
+    <link rel="stylesheet" href="styles-dashboard.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar -->
+        <nav class="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <span class="logo-icon">💰</span>
+                    <span class="logo-text">FinQuest</span>
+                </div>
+            </div>
+
+            <div class="sidebar-content">
+                <div class="user-profile">
+                    <div class="avatar">TJ</div>
+                    <div class="user-info">
+                        <div class="user-name">Thabo Johnson</div>
+                        <div class="user-level">Level 2 Financial Builder</div>
+                    </div>
+                </div>
+
+                <ul class="sidebar-nav">
+                    <li><a href="dashboard.html"><span class="nav-icon">📊</span> Dashboard</a></li>
+                    <li><a href="challenges.html"><span class="nav-icon">🎯</span> Challenges</a></li>
+                    <li><a href="simulations.html"><span class="nav-icon">🎮</span> Simulations</a></li>
+                    <li><a href="learn.html" class="active"><span class="nav-icon">📚</span> Learn</a></li>
+                    <li><a href="community.html"><span class="nav-icon">👥</span> Community</a></li>
+                    <li><a href="profile.html"><span class="nav-icon">👤</span> Profile</a></li>
+                </ul>
+
+                <div class="sidebar-footer">
+                    <a href="#" id="logoutBtn" class="logout-btn">
+                        <span class="nav-icon">🚪</span> Logout
+                    </a>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <header class="main-header">
+                <div class="header-left">
+                    <h1>Financial Learning Center</h1>
+                    <p>Expand your knowledge with our educational resources</p>
+                </div>
+                <div class="header-right">
+                    <div class="points-display">
+                        <span class="points-icon">⭐</span>
+                        <span class="points-value">980 Points</span>
+                    </div>
+                </div>
+            </header>
+
+            <div class="learn-container">
+                <!-- Learning Paths -->
+                <section class="learning-paths">
+                    <h2>Your Learning Journey</h2>
+                    <div class="paths-grid">
+                        <div class="path-card">
+                            <div class="path-header">
+                                <div class="path-icon">🔰</div>
+                                <div class="path-progress">
+                                    <span>80% Complete</span>
+                                    <div class="progress-bar">
+                                        <div class="progress-fill" style="width: 80%"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <h3>Financial Foundations</h3>
+                            <p>Build a solid understanding of personal finance basics</p>
+                            <ul class="path-modules">
+                                <li class="completed">✓ Budgeting Basics</li>
+                                <li class="completed">✓ Banking 101</li>
+                                <li class="completed">✓ Emergency Funds</li>
+                                <li class="completed">✓ Debt Awareness</li>
+                                <li class="current">→ Credit Scores</li>
+                                <li class="upcoming">○ Financial Goals</li>
+                            </ul>
+                            <button class="btn primary full-width">Continue Learning</button>
+                        </div>
+
+                        <div class="path-card">
+                            <div class="path-header">
+                                <div class="path-icon">📈</div>
+                                <div class="path-progress">
+                                    <span>30% Complete</span>
+                                    <div class="progress-bar">
+                                        <div class="progress-fill" style="width: 30%"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <h3>Wealth Building</h3>
+                            <p>Learn strategies to grow your net worth over time</p>
+                            <ul class="path-modules">
+                                <li class="completed">✓ Saving Strategies</li>
+                                <li class="completed">✓ Investing Basics</li>
+                                <li class="current">→ Stock Market</li>
+                                <li class="upcoming">○ Real Estate</li>
+                                <li class="upcoming">○ Retirement Planning</li>
+                                <li class="upcoming">○ Tax Optimization</li>
+                            </ul>
+                            <button class="btn secondary full-width">Continue Learning</button>
+                        </div>
+
+                        <div class="path-card locked">
+                            <div class="path-header">
+                                <div class="path-icon">🚀</div>
+                                <div class="path-progress">
+                                    <span>0% Complete</span>
+                                    <div class="progress-bar">
+                                        <div class="progress-fill" style="width: 0%"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <h3>Advanced Strategies</h3>
+                            <p>Master complex financial concepts and advanced techniques</p>
+                            <div class="locked-overlay">
+                                <span>Complete Financial Foundations to unlock</span>
+                            </div>
+                            <button class="btn outline full-width" disabled>Locked</button>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Resource Library -->
+                <section class="resource-library">
+                    <h2>Resource Library</h2>
+                    <div class="resource-filters">
+                        <button class="filter-btn active" data-category="all">All Resources</button>
+                        <button class="filter-btn" data-category="articles">Articles</button>
+                        <button class="filter-btn" data-category="videos">Videos</button>
+                        <button class="filter-btn" data-category="tools">Tools</button>
+                        <button class="filter-btn" data-category="guides">Guides</button>
+                    </div>
+
+                    <div class="resources-grid">
+                        <div class="resource-card article">
+                            <div class="resource-type">📝 Article</div>
+                            <div class="resource-icon">💰</div>
+                            <h3>5 Budgeting Methods That Actually Work</h3>
+                            <p>Discover different approaches to budgeting and find one that fits your lifestyle and financial goals.</p>
+                            <div class="resource-meta">
+                                <span class="duration">8 min read</span>
+                                <span class="difficulty beginner">Beginner</span>
+                            </div>
+                            <button class="btn outline full-width">Read Article</button>
+                        </div>
+
+                        <div class="resource-card video">
+                            <div class="resource-type">🎥 Video</div>
+                            <div class="resource-icon">📊</div>
+                            <h3>Understanding Compound Interest</h3>
+                            <p>Learn how compound interest can work for you or against you in this animated explanation.</p>
+                            <div class="resource-meta">
+                                <span class="duration">12 min</span>
+                                <span class="difficulty beginner">Beginner</span>
+                            </div>
+                            <button class="btn outline full-width">Watch Video</button>
+                        </div>
+
+                        <div class="resource-card tool">
+                            <div class="resource-type">🛠️ Interactive Tool</div>
+                            <div class="resource-icon">📈</div>
+                            <h3>Credit Score Simulator</h3>
+                            <p>See how different financial decisions impact your credit score in real-time.</p>
+                            <div class="resource-meta">
+                                <span class="duration">5-10 min</span>
+                                <span class="difficulty intermediate">Intermediate</span>
+                            </div>
+                            <button class="btn outline full-width">Try Tool</button>
+                        </div>
+
+                        <div class="resource-card guide">
+                            <div class="resource-type">📚 Guide</div>
+                            <div class="resource-icon">🎯</div>
+                            <h3>First-Time Investor's Checklist</h3>
+                            <p>Step-by-step guide to starting your investment journey with confidence.</p>
+                            <div class="resource-meta">
+                                <span class="duration">15 min read</span>
+                                <span class="difficulty intermediate">Intermediate</span>
+                            </div>
+                            <button class="btn outline full-width">Read Guide</button>
+                        </div>
+
+                        <div class="resource-card article">
+                            <div class="resource-type">📝 Article</div>
+                            <div class="resource-icon">🛡️</div>
+                            <h3>Building Your Emergency Fund</h3>
+                            <p>Practical strategies to build and maintain your financial safety net.</p>
+                            <div class="resource-meta">
+                                <span class="duration">6 min read</span>
+                                <span class="difficulty beginner">Beginner</span>
+                            </div>
+                            <button class="btn outline full-width">Read Article</button>
+                        </div>
+
+                        <div class="resource-card video">
+                            <div class="resource-type">🎥 Video</div>
+                            <div class="resource-icon">💸</div>
+                            <h3>Debt Snowball vs Debt Avalanche</h3>
+                            <p>Compare two popular debt repayment strategies and choose what works for you.</p>
+                            <div class="resource-meta">
+                                <span class="duration">10 min</span>
+                                <span class="difficulty intermediate">Intermediate</span>
+                            </div>
+                            <button class="btn outline full-width">Watch Video</button>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Quick Learning -->
+                <section class="quick-learning">
+                    <h2>Quick Learning</h2>
+                    <div class="quick-cards">
+                        <div class="quick-card">
+                            <div class="quick-icon">💡</div>
+                            <h4>Today's Financial Tip</h4>
+                            <p>"Start tracking your daily expenses - awareness is the first step to better money management."</p>
+                            <button class="btn link">Save Tip</button>
+                        </div>
+
+                        <div class="quick-card">
+                            <div class="quick-icon">📖</div>
+                            <h4>5-Minute Lesson</h4>
+                            <p>Learn about the 50/30/20 budgeting rule in just 5 minutes.</p>
+                            <button class="btn link">Start Lesson</button>
+                        </div>
+
+                        <div class="quick-card">
+                            <div class="quick-icon">❓</div>
+                            <h4>Ask Zari</h4>
+                            <p>Get instant answers to your financial questions from our AI coach.</p>
+                            <button class="btn link">Ask Now</button>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <script src="js-learn.js"></script>
+    <script src="js-auth.js"></script>
+</body>
+</html>

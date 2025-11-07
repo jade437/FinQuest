@@ -1,0 +1,863 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Community - FinQuest</title>
+    <link rel="stylesheet" href="styles-main.css">
+    <link rel="stylesheet" href="styles-dashboard.css">
+    <style>
+        /* Modern Community Styles */
+        .community-container {
+            padding: 1.5rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .community-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2.5rem;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 16px;
+            padding: 1.5rem;
+            color: white;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .stat-card:nth-child(2) {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        }
+
+        .stat-card:nth-child(3) {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        }
+
+        .stat-card:nth-child(4) {
+            background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+        }
+
+        .stat-icon {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.25rem;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+
+        .leaderboard-section, .squads-section, .community-challenges, .discussion-section {
+            margin-bottom: 3rem;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .section-header h2 {
+            font-size: 1.75rem;
+            color: #2d3748;
+            margin: 0;
+        }
+
+        .leaderboard-card, .squad-card, .community-challenge-card, .discussion-item {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .leaderboard-card:hover, .squad-card:hover, .community-challenge-card:hover, .discussion-item:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+        }
+
+        .leaderboard-header {
+            display: grid;
+            grid-template-columns: 1fr auto auto;
+            padding: 1rem 1.5rem;
+            background-color: #f7fafc;
+            border-bottom: 1px solid #e2e8f0;
+            font-weight: 600;
+            color: #4a5568;
+        }
+
+        .leaderboard-list {
+            padding: 0;
+        }
+
+        .leaderboard-item {
+            display: grid;
+            grid-template-columns: auto 1fr auto auto;
+            align-items: center;
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid #f1f5f9;
+            gap: 1rem;
+        }
+
+        .leaderboard-item:last-child {
+            border-bottom: none;
+        }
+
+        .leaderboard-item.first {
+            background: linear-gradient(to right, rgba(255, 215, 0, 0.05), transparent);
+        }
+
+        .leaderboard-item.second {
+            background: linear-gradient(to right, rgba(192, 192, 192, 0.05), transparent);
+        }
+
+        .leaderboard-item.third {
+            background: linear-gradient(to right, rgba(205, 127, 50, 0.05), transparent);
+        }
+
+        .leaderboard-item.current-user {
+            background: linear-gradient(to right, rgba(66, 153, 225, 0.08), transparent);
+            border-left: 4px solid #4299e1;
+        }
+
+        .rank {
+            font-weight: 700;
+            width: 2rem;
+            text-align: center;
+            color: #4a5568;
+        }
+
+        .first .rank {
+            color: #d69e2e;
+        }
+
+        .second .rank {
+            color: #a0aec0;
+        }
+
+        .third .rank {
+            color: #ed8936;
+        }
+
+        .player-info {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .player-avatar {
+            width: 2.5rem;
+            height: 2.5rem;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .player-details .player-name {
+            font-weight: 600;
+            color: #2d3748;
+        }
+
+        .player-details .player-title {
+            font-size: 0.8rem;
+            color: #718096;
+        }
+
+        .player-level, .player-points {
+            font-weight: 600;
+            color: #4a5568;
+        }
+
+        .squads-grid, .challenges-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .squad-card, .community-challenge-card {
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        .squad-header {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.25rem;
+        }
+
+        .squad-icon {
+            font-size: 2.5rem;
+            flex-shrink: 0;
+        }
+
+        .squad-info h3 {
+            margin: 0 0 0.5rem 0;
+            color: #2d3748;
+            font-size: 1.25rem;
+        }
+
+        .squad-info p {
+            margin: 0;
+            color: #718096;
+            font-size: 0.9rem;
+            line-height: 1.4;
+        }
+
+        .squad-stats {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 1.25rem;
+            padding: 1rem 0;
+            border-top: 1px solid #f1f5f9;
+            border-bottom: 1px solid #f1f5f9;
+        }
+
+        .squad-stat {
+            text-align: center;
+        }
+
+        .stat-value {
+            display: block;
+            font-weight: 700;
+            font-size: 1.25rem;
+            color: #2d3748;
+        }
+
+        .stat-label {
+            font-size: 0.8rem;
+            color: #718096;
+        }
+
+        .squad-members {
+            display: flex;
+            margin-bottom: 1.25rem;
+        }
+
+        .member-avatar, .member-more {
+            width: 2rem;
+            height: 2rem;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #e2e8f0;
+            color: #4a5568;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-right: -0.5rem;
+            border: 2px solid white;
+        }
+
+        .member-more {
+            background: #4299e1;
+            color: white;
+        }
+
+        .community-challenge-card {
+            position: relative;
+        }
+
+        .challenge-badge {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: #4299e1;
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .community-challenge-card h3 {
+            margin: 0 0 0.5rem 0;
+            color: #2d3748;
+            font-size: 1.25rem;
+        }
+
+        .community-challenge-card p {
+            margin: 0 0 1.25rem 0;
+            color: #718096;
+            font-size: 0.9rem;
+            line-height: 1.4;
+        }
+
+        .challenge-progress {
+            margin-bottom: 1.25rem;
+        }
+
+        .progress-bar {
+            height: 8px;
+            background: #e2e8f0;
+            border-radius: 4px;
+            overflow: hidden;
+            margin-bottom: 0.5rem;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(to right, #48bb78, #38a169);
+            border-radius: 4px;
+        }
+
+        .progress-stats {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.8rem;
+            color: #718096;
+        }
+
+        .participants {
+            margin-bottom: 1.25rem;
+            font-size: 0.9rem;
+            color: #4a5568;
+        }
+
+        .discussion-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .discussion-item {
+            display: flex;
+            gap: 1rem;
+            padding: 1.5rem;
+        }
+
+        .discussion-avatar {
+            width: 3rem;
+            height: 3rem;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            font-size: 1rem;
+            flex-shrink: 0;
+        }
+
+        .discussion-content {
+            flex: 1;
+        }
+
+        .discussion-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+        }
+
+        .author {
+            font-weight: 600;
+            color: #2d3748;
+        }
+
+        .time {
+            font-size: 0.8rem;
+            color: #a0aec0;
+        }
+
+        .discussion-content h4 {
+            margin: 0 0 0.5rem 0;
+            color: #2d3748;
+            font-size: 1.1rem;
+        }
+
+        .discussion-content p {
+            margin: 0 0 1rem 0;
+            color: #718096;
+            font-size: 0.9rem;
+            line-height: 1.4;
+        }
+
+        .discussion-stats {
+            display: flex;
+            gap: 1rem;
+            font-size: 0.8rem;
+            color: #718096;
+        }
+
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: none;
+            font-size: 0.9rem;
+        }
+
+        .btn.primary {
+            background: #4299e1;
+            color: white;
+        }
+
+        .btn.primary:hover {
+            background: #3182ce;
+        }
+
+        .btn.secondary {
+            background: #e2e8f0;
+            color: #4a5568;
+        }
+
+        .btn.secondary:hover {
+            background: #cbd5e0;
+        }
+
+        .btn.outline {
+            background: transparent;
+            border: 1px solid #cbd5e0;
+            color: #4a5568;
+        }
+
+        .btn.outline:hover {
+            background: #f7fafc;
+        }
+
+        .btn.full-width {
+            width: 100%;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .community-stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .squads-grid, .challenges-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .leaderboard-header {
+                display: none;
+            }
+            
+            .leaderboard-item {
+                grid-template-columns: auto 1fr;
+                grid-template-areas: 
+                    "rank player"
+                    "level points";
+                gap: 0.5rem;
+                padding: 1rem;
+            }
+            
+            .rank {
+                grid-area: rank;
+            }
+            
+            .player-info {
+                grid-area: player;
+            }
+            
+            .player-level {
+                grid-area: level;
+                justify-self: start;
+            }
+            
+            .player-points {
+                grid-area: points;
+                justify-self: end;
+            }
+            
+            .section-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar -->
+        <nav class="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <span class="logo-icon">💰</span>
+                    <span class="logo-text">FinQuest</span>
+                </div>
+            </div>
+
+            <div class="sidebar-content">
+                <div class="user-profile">
+                    <div class="avatar">TJ</div>
+                    <div class="user-info">
+                        <div class="user-name">Thabo Johnson</div>
+                        <div class="user-level">Level 2 Financial Builder</div>
+                    </div>
+                </div>
+
+                <ul class="sidebar-nav">
+                    <li><a href="dashboard.html"><span class="nav-icon">📊</span> Dashboard</a></li>
+                    <li><a href="challenges.html"><span class="nav-icon">🎯</span> Challenges</a></li>
+                    <li><a href="learn.html"><span class="nav-icon">📚</span> Learn</a></li>
+                    <li><a href="community.html" class="active"><span class="nav-icon">👥</span> Community</a></li>
+                    <li><a href="profile.html"><span class="nav-icon">👤</span> Profile</a></li>
+                </ul>
+
+                <div class="sidebar-footer">
+                    <a href="#" id="logoutBtn" class="logout-btn">
+                        <span class="nav-icon">🚪</span> Logout
+                    </a>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <header class="main-header">
+                <div class="header-left">
+                    <h1>Community</h1>
+                    <p>Connect with other FinQuest adventurers</p>
+                </div>
+                <div class="header-right">
+                    <div class="points-display">
+                        <span class="points-icon">⭐</span>
+                        <span class="points-value">980 Points</span>
+                    </div>
+                </div>
+            </header>
+
+            <div class="community-container">
+                <!-- Community Stats -->
+                <div class="community-stats">
+                    <div class="stat-card">
+                        <div class="stat-icon">👥</div>
+                        <div class="stat-number">12,458</div>
+                        <div class="stat-label">Total Players</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">🏆</div>
+                        <div class="stat-number">342</div>
+                        <div class="stat-label">Active Squads</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">🔥</div>
+                        <div class="stat-number">2,874</div>
+                        <div class="stat-label">Challenges Today</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">💰</div>
+                        <div class="stat-number">R4.2M</div>
+                        <div class="stat-label">Community Savings</div>
+                    </div>
+                </div>
+
+                <!-- Leaderboard -->
+                <section class="leaderboard-section">
+                    <h2>Top Players</h2>
+                    <div class="leaderboard-card">
+                        <div class="leaderboard-header">
+                            <span>Player</span>
+                            <span>Level</span>
+                            <span>Points</span>
+                        </div>
+                        <div class="leaderboard-list">
+                            <div class="leaderboard-item first">
+                                <div class="rank">1</div>
+                                <div class="player-info">
+                                    <div class="player-avatar">TS</div>
+                                    <div class="player-details">
+                                        <div class="player-name">Thabo S.</div>
+                                        <div class="player-title">Financial Guru</div>
+                                    </div>
+                                </div>
+                                <div class="player-level">Level 8</div>
+                                <div class="player-points">9,850</div>
+                            </div>
+
+                            <div class="leaderboard-item second">
+                                <div class="rank">2</div>
+                                <div class="player-info">
+                                    <div class="player-avatar">NM</div>
+                                    <div class="player-details">
+                                        <div class="player-name">Nomsa M.</div>
+                                        <div class="player-title">Savings Expert</div>
+                                    </div>
+                                </div>
+                                <div class="player-level">Level 7</div>
+                                <div class="player-points">8,920</div>
+                            </div>
+
+                            <div class="leaderboard-item third">
+                                <div class="rank">3</div>
+                                <div class="player-info">
+                                    <div class="player-avatar">LK</div>
+                                    <div class="player-details">
+                                        <div class="player-name">Lerato K.</div>
+                                        <div class="player-title">Investment Whiz</div>
+                                    </div>
+                                </div>
+                                <div class="player-level">Level 7</div>
+                                <div class="player-points">8,450</div>
+                            </div>
+
+                            <div class="leaderboard-item">
+                                <div class="rank">4</div>
+                                <div class="player-info">
+                                    <div class="player-avatar">PM</div>
+                                    <div class="player-details">
+                                        <div class="player-name">Peter M.</div>
+                                        <div class="player-title">Budget Master</div>
+                                    </div>
+                                </div>
+                                <div class="player-level">Level 6</div>
+                                <div class="player-points">7,980</div>
+                            </div>
+
+                            <div class="leaderboard-item current-user">
+                                <div class="rank">27</div>
+                                <div class="player-info">
+                                    <div class="player-avatar">TJ</div>
+                                    <div class="player-details">
+                                        <div class="player-name">Thabo J.</div>
+                                        <div class="player-title">Financial Builder</div>
+                                    </div>
+                                </div>
+                                <div class="player-level">Level 2</div>
+                                <div class="player-points">980</div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Squads -->
+                <section class="squads-section">
+                    <div class="section-header">
+                        <h2>Featured Squads</h2>
+                        <button class="btn secondary">Create Squad</button>
+                    </div>
+                    
+                    <div class="squads-grid">
+                        <div class="squad-card">
+                            <div class="squad-header">
+                                <div class="squad-icon">💰</div>
+                                <div class="squad-info">
+                                    <h3>Savings Squad</h3>
+                                    <p>We're challenging each other to save 20% of our income this month!</p>
+                                </div>
+                            </div>
+                            <div class="squad-stats">
+                                <div class="squad-stat">
+                                    <span class="stat-value">8</span>
+                                    <span class="stat-label">Members</span>
+                                </div>
+                                <div class="squad-stat">
+                                    <span class="stat-value">15</span>
+                                    <span class="stat-label">Challenges</span>
+                                </div>
+                                <div class="squad-stat">
+                                    <span class="stat-value">85%</span>
+                                    <span class="stat-label">Active</span>
+                                </div>
+                            </div>
+                            <div class="squad-members">
+                                <div class="member-avatar">JD</div>
+                                <div class="member-avatar">TS</div>
+                                <div class="member-avatar">NM</div>
+                                <div class="member-more">+5</div>
+                            </div>
+                            <button class="btn primary full-width">Join Squad</button>
+                        </div>
+
+                        <div class="squad-card">
+                            <div class="squad-header">
+                                <div class="squad-icon">📈</div>
+                                <div class="squad-info">
+                                    <h3>Investment Club</h3>
+                                    <p>Learning about stocks, bonds, and building wealth together</p>
+                                </div>
+                            </div>
+                            <div class="squad-stats">
+                                <div class="squad-stat">
+                                    <span class="stat-value">12</span>
+                                    <span class="stat-label">Members</span>
+                                </div>
+                                <div class="squad-stat">
+                                    <span class="stat-value">22</span>
+                                    <span class="stat-label">Challenges</span>
+                                </div>
+                                <div class="squad-stat">
+                                    <span class="stat-value">92%</span>
+                                    <span class="stat-label">Active</span>
+                                </div>
+                            </div>
+                            <div class="squad-members">
+                                <div class="member-avatar">LK</div>
+                                <div class="member-avatar">PM</div>
+                                <div class="member-avatar">AZ</div>
+                                <div class="member-more">+9</div>
+                            </div>
+                            <button class="btn primary full-width">Join Squad</button>
+                        </div>
+
+                        <div class="squad-card">
+                            <div class="squad-header">
+                                <div class="squad-icon">🎯</div>
+                                <div class="squad-info">
+                                    <h3>Debt Free Crew</h3>
+                                    <p>Supporting each other in becoming debt-free and financially independent</p>
+                                </div>
+                            </div>
+                            <div class="squad-stats">
+                                <div class="squad-stat">
+                                    <span class="stat-value">15</span>
+                                    <span class="stat-label">Members</span>
+                                </div>
+                                <div class="squad-stat">
+                                    <span class="stat-value">18</span>
+                                    <span class="stat-label">Challenges</span>
+                                </div>
+                                <div class="squad-stat">
+                                    <span class="stat-value">78%</span>
+                                    <span class="stat-label">Active</span>
+                                </div>
+                            </div>
+                            <div class="squad-members">
+                                <div class="member-avatar">SM</div>
+                                <div class="member-avatar">RJ</div>
+                                <div class="member-avatar">KP</div>
+                                <div class="member-more">+12</div>
+                            </div>
+                            <button class="btn primary full-width">Join Squad</button>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Community Challenges -->
+                <section class="community-challenges">
+                    <h2>Community Challenges</h2>
+                    <div class="challenges-grid">
+                        <div class="community-challenge-card">
+                            <div class="challenge-badge community">Community</div>
+                            <h3>Save R1 Million Challenge</h3>
+                            <p>Community goal to collectively save R1 million</p>
+                            <div class="challenge-progress">
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: 42%"></div>
+                                </div>
+                                <div class="progress-stats">
+                                    <span>R420,000 saved</span>
+                                    <span>42% Complete</span>
+                                </div>
+                            </div>
+                            <div class="participants">
+                                <span>2,458 participants</span>
+                            </div>
+                            <button class="btn primary full-width">Join Challenge</button>
+                        </div>
+
+                        <div class="community-challenge-card">
+                            <div class="challenge-badge community">Community</div>
+                            <h3>Financial Literacy Month</h3>
+                            <p>Complete 5 financial literacy challenges this month</p>
+                            <div class="challenge-progress">
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: 65%"></div>
+                                </div>
+                                <div class="progress-stats">
+                                    <span>3,245 participants</span>
+                                    <span>65% Complete</span>
+                                </div>
+                            </div>
+                            <div class="participants">
+                                <span>5,000 goal</span>
+                            </div>
+                            <button class="btn primary full-width">Join Challenge</button>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Discussion Forum -->
+                <section class="discussion-section">
+                    <h2>Recent Discussions</h2>
+                    <div class="discussion-list">
+                        <div class="discussion-item">
+                            <div class="discussion-avatar">NM</div>
+                            <div class="discussion-content">
+                                <div class="discussion-header">
+                                    <span class="author">Nomsa M.</span>
+                                    <span class="time">2 hours ago</span>
+                                </div>
+                                <h4>Best way to save for a house deposit?</h4>
+                                <p>I'm 25 and want to buy my first home in 5 years. What's the most effective saving strategy?</p>
+                                <div class="discussion-stats">
+                                    <span>💬 24 comments</span>
+                                    <span>👍 42 likes</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="discussion-item">
+                            <div class="discussion-avatar">TS</div>
+                            <div class="discussion-content">
+                                <div class="discussion-header">
+                                    <span class="author">Thabo S.</span>
+                                    <span class="time">5 hours ago</span>
+                                </div>
+                                <h4>Just paid off my student loan! 🎉</h4>
+                                <p>After 3 years of consistent payments, I'm finally student debt free! Sharing my strategy...</p>
+                                <div class="discussion-stats">
+                                    <span>💬 56 comments</span>
+                                    <span>👍 128 likes</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="discussion-item">
+                            <div class="discussion-avatar">LK</div>
+                            <div class="discussion-content">
+                                <div class="discussion-header">
+                                    <span class="author">Lerato K.</span>
+                                    <span class="time">1 day ago</span>
+                                </div>
+                                <h4>Tax-free savings account vs. traditional savings?</h4>
+                                <p>Which is better for long-term growth? Looking for advice from experienced investors.</p>
+                                <div class="discussion-stats">
+                                    <span>💬 38 comments</span>
+                                    <span>👍 67 likes</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <button class="btn outline full-width">View All Discussions</button>
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <script src="js-community.js"></script>
+    <script src="js-auth.js"></script>
+</body>
+</html>

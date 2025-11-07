@@ -1,0 +1,1657 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FinQuest - Interactive Financial Stories</title>
+    <style>
+        :root {
+            --primary: #3498db;
+            --secondary: #9b59b6;
+            --success: #27ae60;
+            --warning: #f39c12;
+            --danger: #e74c3c;
+            --dark: #2c3e50;
+            --light: #ecf0f1;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f7fa;
+            color: #333;
+            overflow-x: hidden;
+        }
+        
+        .app-container {
+            display: flex;
+            min-height: 100vh;
+        }
+        
+        /* Sidebar styles */
+        .sidebar {
+            width: 260px;
+            background: linear-gradient(180deg, var(--dark) 0%, #1a2530 100%);
+            color: white;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .sidebar-header {
+            padding: 20px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .logo-icon {
+            font-size: 24px;
+        }
+        
+        .logo-text {
+            font-size: 20px;
+            font-weight: bold;
+        }
+        
+        .sidebar-content {
+            flex: 1;
+            padding: 20px 0;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 0 20px 20px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        .avatar {
+            width: 40px;
+            height: 40px;
+            background-color: var(--primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+        
+        .user-name {
+            font-weight: bold;
+        }
+        
+        .user-level {
+            font-size: 12px;
+            opacity: 0.8;
+        }
+        
+        .sidebar-nav {
+            list-style: none;
+            margin-top: 20px;
+            flex: 1;
+        }
+        
+        .sidebar-nav li {
+            margin-bottom: 5px;
+        }
+        
+        .sidebar-nav a {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 20px;
+            color: rgba(255,255,255,0.8);
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+        
+        .sidebar-nav a:hover, .sidebar-nav a.active {
+            background-color: rgba(255,255,255,0.1);
+            color: white;
+        }
+        
+        .sidebar-footer {
+            padding: 20px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        .logout-btn {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: rgba(255,255,255,0.8);
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+        
+        .logout-btn:hover {
+            color: white;
+        }
+        
+        /* Main content styles */
+        .main-content {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+        }
+        
+        .main-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+        
+        .header-left h1 {
+            font-size: 28px;
+            margin-bottom: 5px;
+        }
+        
+        .header-left p {
+            color: #666;
+        }
+        
+        .points-display {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background-color: white;
+            padding: 10px 15px;
+            border-radius: 20px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .points-icon {
+            color: #f1c40f;
+        }
+        
+        .points-value {
+            font-weight: bold;
+        }
+        
+        /* Story Cards Grid */
+        .stories-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+        
+        .story-card {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            transition: transform 0.3s, box-shadow 0.3s;
+            cursor: pointer;
+        }
+        
+        .story-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .story-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .story-icon {
+            font-size: 32px;
+        }
+        
+        .story-difficulty {
+            font-size: 12px;
+            padding: 3px 8px;
+            border-radius: 10px;
+            font-weight: bold;
+        }
+        
+        .beginner {
+            background: #e8f6f3;
+            color: var(--success);
+        }
+        
+        .intermediate {
+            background: #e8f4fd;
+            color: var(--primary);
+        }
+        
+        .advanced {
+            background: #fdedec;
+            color: var(--danger);
+        }
+        
+        .story-title {
+            font-size: 18px;
+            margin-bottom: 10px;
+            color: var(--dark);
+        }
+        
+        .story-description {
+            color: #666;
+            margin-bottom: 15px;
+            font-size: 14px;
+        }
+        
+        .story-meta {
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
+            color: #666;
+            margin-bottom: 15px;
+        }
+        
+        .story-points {
+            color: var(--warning);
+            font-weight: bold;
+        }
+        
+        .story-progress {
+            margin-bottom: 15px;
+        }
+        
+        .progress-bar {
+            height: 10px;
+            background: var(--light);
+            border-radius: 5px;
+            overflow: hidden;
+            margin-bottom: 5px;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: var(--success);
+            border-radius: 5px;
+            transition: width 0.5s;
+        }
+        
+        .progress-text {
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
+            color: #666;
+        }
+        
+        /* Avatar Selection Screen */
+        .avatar-selection {
+            display: none;
+            background: white;
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        
+        .avatar-selection.active {
+            display: block;
+        }
+        
+        .avatar-title {
+            font-size: 28px;
+            margin-bottom: 10px;
+            color: var(--dark);
+        }
+        
+        .avatar-subtitle {
+            color: #666;
+            margin-bottom: 30px;
+        }
+        
+        .avatar-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .avatar-option {
+            padding: 20px;
+            border: 2px solid transparent;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .avatar-option:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .avatar-option.selected {
+            border-color: var(--primary);
+            background: #e1f0fa;
+        }
+        
+        .avatar-icon {
+            font-size: 48px;
+            margin-bottom: 10px;
+        }
+        
+        .avatar-name {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        
+        .avatar-description {
+            font-size: 14px;
+            color: #666;
+        }
+        
+        /* Storytelling Screen */
+        .storytelling-screen {
+            display: none;
+            background: white;
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            margin-bottom: 30px;
+            position: relative;
+            overflow: hidden;
+            min-height: 500px;
+        }
+        
+        .storytelling-screen.active {
+            display: block;
+        }
+        
+        .story-background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+            opacity: 0.1;
+            z-index: 1;
+        }
+        
+        .story-content {
+            position: relative;
+            z-index: 2;
+        }
+        
+        .story-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .story-icon-large {
+            font-size: 48px;
+            margin-bottom: 15px;
+        }
+        
+        .story-title-large {
+            font-size: 28px;
+            margin-bottom: 10px;
+            color: var(--dark);
+        }
+        
+        .story-progress-large {
+            width: 100%;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+        
+        .scene-container {
+            margin-bottom: 30px;
+            animation: fadeIn 0.8s ease-out;
+        }
+        
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .scene-description {
+            line-height: 1.6;
+            margin-bottom: 20px;
+            font-size: 16px;
+            background: var(--light);
+            padding: 20px;
+            border-radius: 8px;
+        }
+        
+        .character-dialog {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+            padding: 15px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            animation: slideIn 0.5s ease-out;
+        }
+        
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+        
+        .character-avatar {
+            width: 60px;
+            height: 60px;
+            background: var(--primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            color: white;
+            flex-shrink: 0;
+        }
+        
+        .character-text {
+            font-style: italic;
+            position: relative;
+            padding: 15px;
+            background: var(--light);
+            border-radius: 8px;
+            flex: 1;
+        }
+        
+        .character-text:after {
+            content: '';
+            position: absolute;
+            left: -10px;
+            top: 20px;
+            width: 0;
+            height: 0;
+            border-top: 10px solid transparent;
+            border-bottom: 10px solid transparent;
+            border-right: 10px solid var(--light);
+        }
+        
+        .player-dialog {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+            padding: 15px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            animation: slideInRight 0.5s ease-out;
+        }
+        
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+        
+        .player-avatar {
+            width: 60px;
+            height: 60px;
+            background: var(--success);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            color: white;
+            flex-shrink: 0;
+        }
+        
+        .player-text {
+            position: relative;
+            padding: 15px;
+            background: #e1f0fa;
+            border-radius: 8px;
+            flex: 1;
+        }
+        
+        .player-text:after {
+            content: '';
+            position: absolute;
+            right: -10px;
+            top: 20px;
+            width: 0;
+            height: 0;
+            border-top: 10px solid transparent;
+            border-bottom: 10px solid transparent;
+            border-left: 10px solid #e1f0fa;
+        }
+        
+        /* Decision Points */
+        .decision-point {
+            margin: 30px 0;
+            animation: fadeInUp 0.5s ease-out;
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .decision-title {
+            font-size: 18px;
+            margin-bottom: 15px;
+            color: var(--dark);
+            text-align: center;
+        }
+        
+        .decision-options {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+        
+        .decision-option {
+            padding: 15px;
+            background: var(--light);
+            border: 2px solid transparent;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: center;
+        }
+        
+        .decision-option:hover {
+            background: #dfe6e9;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 10px rgba(0,0,0,0.1);
+        }
+        
+        .decision-option.selected {
+            border-color: var(--primary);
+            background: #e1f0fa;
+            transform: scale(1.05);
+        }
+        
+        /* Story Controls */
+        .story-controls {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+        }
+        
+        /* Buttons */
+        .btn {
+            padding: 12px 24px;
+            border-radius: 5px;
+            border: none;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+            font-size: 16px;
+        }
+        
+        .btn.primary {
+            background-color: var(--primary);
+            color: white;
+        }
+        
+        .btn.secondary {
+            background-color: var(--secondary);
+            color: white;
+        }
+        
+        .btn.success {
+            background-color: var(--success);
+            color: white;
+        }
+        
+        .btn.outline {
+            background-color: transparent;
+            border: 1px solid var(--primary);
+            color: var(--primary);
+        }
+        
+        .btn:hover {
+            opacity: 0.9;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .btn.full-width {
+            width: 100%;
+        }
+        
+        /* Back Button */
+        .back-button {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: none;
+            border: none;
+            color: var(--primary);
+            font-size: 16px;
+            cursor: pointer;
+            margin-bottom: 20px;
+            padding: 8px 0;
+            transition: all 0.3s;
+        }
+        
+        .back-button:hover {
+            transform: translateX(-5px);
+        }
+        
+        /* Results Screen */
+        .results-screen {
+            display: none;
+            background: white;
+            border-radius: 10px;
+            padding: 40px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            margin-bottom: 40px;
+            text-align: center;
+        }
+        
+        .results-screen.active {
+            display: block;
+        }
+        
+        .results-icon {
+            font-size: 64px;
+            margin-bottom: 20px;
+            animation: bounce 2s infinite;
+        }
+        
+        @keyframes bounce {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+        
+        .results-title {
+            font-size: 28px;
+            margin-bottom: 10px;
+            color: var(--dark);
+        }
+        
+        .results-score {
+            font-size: 48px;
+            font-weight: bold;
+            margin: 20px 0;
+            color: var(--primary);
+        }
+        
+        .results-points {
+            font-size: 24px;
+            color: var(--warning);
+            margin-bottom: 30px;
+        }
+        
+        .results-breakdown {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin: 30px 0;
+        }
+        
+        .result-item {
+            background: var(--light);
+            padding: 15px;
+            border-radius: 8px;
+        }
+        
+        .result-label {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 5px;
+        }
+        
+        .result-value {
+            font-size: 18px;
+            font-weight: bold;
+        }
+        
+        /* Toast Notification */
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: var(--dark);
+            color: white;
+            padding: 15px 20px;
+            border-radius: 5px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+            z-index: 1001;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transform: translateY(100px);
+            opacity: 0;
+            transition: transform 0.3s, opacity 0.3s;
+        }
+        
+        .toast.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+        
+        .toast-icon {
+            font-size: 20px;
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .app-container {
+                flex-direction: column;
+            }
+            
+            .sidebar {
+                width: 100%;
+                height: auto;
+            }
+            
+            .stories-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .avatar-options {
+                grid-template-columns: 1fr 1fr;
+            }
+            
+            .decision-options {
+                grid-template-columns: 1fr;
+            }
+            
+            .story-controls {
+                flex-direction: column;
+                gap: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar -->
+        <nav class="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <span class="logo-icon">💰</span>
+                    <span class="logo-text">FinQuest</span>
+                </div>
+            </div>
+
+            <div class="sidebar-content">
+                <div class="user-profile">
+                    <div class="avatar">TJ</div>
+                    <div class="user-info">
+                        <div class="user-name">Thabo Johnson</div>
+                        <div class="user-level">Level 2 Financial Builder</div>
+                    </div>
+                </div>
+
+                <ul class="sidebar-nav">
+                    <li><a href="dashboard.html"><span class="nav-icon">📊</span> Dashboard</a></li>
+                    <li><a href="challenges.html"><span class="nav-icon">🎯</span> Challenges</a></li>
+                    <li><a href="learn.html" class="active"><span class="nav-icon">📚</span> Learn</a></li>
+                    <li><a href="community.html"><span class="nav-icon">👥</span> Community</a></li>
+                    <li><a href="profile.html"><span class="nav-icon">👤</span> Profile</a></li>
+                </ul>
+
+                <div class="sidebar-footer">
+                    <a href="#" id="logoutBtn" class="logout-btn">
+                        <span class="nav-icon">🚪</span> Logout
+                    </a>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <header class="main-header">
+                <div class="header-left">
+                    <h1>Financial Learning Center</h1>
+                    <p>Learn through interactive stories and real-world simulations</p>
+                </div>
+                <div class="header-right">
+                    <div class="points-display">
+                        <span class="points-icon">⭐</span>
+                        <span class="points-value" id="totalPoints">980 Points</span>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Story Cards Grid -->
+            <div class="stories-grid" id="storiesGrid">
+                <!-- Stories will be dynamically generated -->
+            </div>
+
+            <!-- Avatar Selection Screen -->
+            <div class="avatar-selection" id="avatarSelection">
+                <h2 class="avatar-title">Choose Your Character</h2>
+                <p class="avatar-subtitle">Select an avatar to represent you in the story</p>
+                
+                <div class="avatar-options" id="avatarOptions">
+                    <!-- Avatar options will be dynamically generated -->
+                </div>
+                
+                <button class="btn primary full-width" id="confirmAvatar">Confirm Selection</button>
+            </div>
+
+            <!-- Storytelling Screen -->
+            <div class="storytelling-screen" id="storytellingScreen">
+                <button class="back-button" id="backFromStory">
+                    <span>←</span> Back to Stories
+                </button>
+                
+                <div class="story-background" id="storyBackground"></div>
+                
+                <div class="story-content">
+                    <div class="story-header">
+                        <div class="story-icon-large" id="storyIconLarge">🏙️</div>
+                        <h2 class="story-title-large" id="storyTitleLarge">The City Budget Challenge</h2>
+                        <div class="story-progress-large">
+                            <div class="progress-bar">
+                                <div class="progress-fill" id="storyProgress" style="width: 0%"></div>
+                            </div>
+                            <div class="progress-text">
+                                <span id="storyProgressText">Chapter 1 of 5</span>
+                                <span id="storyPoints">+0 Points</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="scene-container" id="sceneContainer">
+                        <!-- Story scenes will be dynamically generated -->
+                    </div>
+                    
+                    <div class="story-controls">
+                        <button class="btn outline" id="restartStory">Restart Story</button>
+                        <button class="btn primary" id="continueStory">Continue</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Results Screen -->
+            <div class="results-screen" id="resultsScreen">
+                <div class="results-icon" id="resultsIcon">🎉</div>
+                <h2 class="results-title" id="resultsTitle">Story Complete!</h2>
+                <div class="results-score" id="resultsScore">85%</div>
+                <div class="results-points" id="resultsPoints">+150 Points</div>
+                
+                <div class="results-breakdown" id="resultsBreakdown">
+                    <!-- Results breakdown will be loaded dynamically -->
+                </div>
+                
+                <div class="story-controls">
+                    <button class="btn outline" id="resultsBack">Back to Stories</button>
+                    <button class="btn primary" id="resultsNext">Try Another Story</button>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="toast">
+        <span class="toast-icon" id="toastIcon">✅</span>
+        <span id="toastMessage">Action completed successfully!</span>
+    </div>
+
+    <script>
+        // Application state
+        const appState = {
+            userPoints: parseInt(localStorage.getItem('userPoints')) || 980,
+            // Story progress tracking
+            stories: {
+                'city-budget': { progress: 0, currentChapter: 1, points: 0, completed: false },
+                'startup-survival': { progress: 0, currentChapter: 1, points: 0, completed: false },
+                'job-negotiation': { progress: 0, currentChapter: 1, points: 0, completed: false },
+                'home-purchase': { progress: 0, currentChapter: 1, points: 0, completed: false },
+                'investment-strategy': { progress: 0, currentChapter: 1, points: 0, completed: false }
+            },
+            // Current activity tracking
+            currentStory: null,
+            selectedAvatar: null,
+            // Track user choices for stories
+            storyChoices: {
+                'city-budget': {},
+                'startup-survival': {},
+                'job-negotiation': {},
+                'home-purchase': {},
+                'investment-strategy': {}
+            }
+        };
+
+        // Avatar options
+        const avatarData = [
+            {
+                id: 'finance-whiz',
+                name: 'Finance Whiz',
+                icon: '🧠',
+                description: 'Analytical thinker with strong financial knowledge'
+            },
+            {
+                id: 'budget-hero',
+                name: 'Budget Hero',
+                icon: '🦸',
+                description: 'Focused on saving money and making smart spending choices'
+            },
+            {
+                id: 'entrepreneur',
+                name: 'Entrepreneur',
+                icon: '💼',
+                description: 'Risk-taker with business mindset and growth focus'
+            },
+            {
+                id: 'family-planner',
+                name: 'Family Planner',
+                icon: '👨‍👩‍👧‍👦',
+                description: 'Balances financial goals with family needs and security'
+            }
+        ];
+
+        // Story data
+        const storyData = {
+            'city-budget': {
+                title: 'City Budget Challenge',
+                description: 'Manage a city budget and make tough financial decisions as the new financial advisor.',
+                icon: '🏙️',
+                difficulty: 'intermediate',
+                duration: '15-20 min',
+                points: 150,
+                totalChapters: 5,
+                background: 'linear-gradient(135deg, #3498db, #9b59b6)',
+                chapters: [
+                    {
+                        title: 'Welcome to the City',
+                        scenes: [
+                            {
+                                type: 'narrative',
+                                content: 'You arrive at City Hall on your first day as the new Financial Advisor. The city is facing a budget crisis, and Mayor Williams is counting on you to help allocate the R10 million budget wisely.'
+                            },
+                            {
+                                type: 'character',
+                                character: 'Mayor Williams',
+                                avatar: 'M',
+                                content: 'Welcome! I\'m so glad you\'re here. Our city is facing difficult financial times, and we need your expertise to balance our budget while keeping essential services running.'
+                            },
+                            {
+                                type: 'player',
+                                content: 'I\'m ready to help. Let\'s review the current budget situation and identify our priorities.'
+                            },
+                            {
+                                type: 'narrative',
+                                content: 'The mayor shows you the budget breakdown. You need to allocate funds across Education, Healthcare, Infrastructure, Public Safety, and Parks & Recreation.'
+                            },
+                            {
+                                type: 'decision',
+                                title: 'How will you approach the budget allocation?',
+                                options: [
+                                    {
+                                        text: 'Focus on Education and Healthcare as top priorities',
+                                        outcome: 'You prioritize human development and social services'
+                                    },
+                                    {
+                                        text: 'Invest heavily in Infrastructure to boost economic growth',
+                                        outcome: 'You focus on long-term economic development'
+                                    },
+                                    {
+                                        text: 'Balance all departments with moderate funding',
+                                        outcome: 'You take a cautious, balanced approach'
+                                    },
+                                    {
+                                        text: 'Maximize Public Safety and essential services',
+                                        outcome: 'You prioritize security and basic needs'
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        title: 'The Hospital Crisis',
+                        scenes: [
+                            {
+                                type: 'narrative',
+                                content: 'Just two weeks into your new role, the main city hospital reports an emergency - critical equipment failures that require R500,000 in immediate repairs.'
+                            },
+                            {
+                                type: 'character',
+                                character: 'Health Director',
+                                avatar: 'H',
+                                content: 'We have a serious situation at the hospital. Without these repairs, we risk patient safety and may have to close entire wards.'
+                            },
+                            {
+                                type: 'player',
+                                content: 'This is urgent. We need to find the funds immediately while minimizing impact on other services.'
+                            },
+                            {
+                                type: 'decision',
+                                title: 'How will you fund the emergency hospital repairs?',
+                                options: [
+                                    {
+                                        text: 'Cut funding from Parks & Recreation temporarily',
+                                        outcome: 'You redirect funds from non-essential services'
+                                    },
+                                    {
+                                        text: 'Implement small across-the-board cuts to all departments',
+                                        outcome: 'You spread the impact evenly across the city'
+                                    },
+                                    {
+                                        text: 'Use the emergency reserve fund',
+                                        outcome: 'You tap into the city\'s safety net'
+                                    },
+                                    {
+                                        text: 'Delay infrastructure projects to free up funds',
+                                        outcome: 'You postpone long-term investments for immediate needs'
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            },
+            'startup-survival': {
+                title: 'Startup Survival',
+                description: 'Navigate the financial challenges of running a tech startup in its first year.',
+                icon: '🚀',
+                difficulty: 'advanced',
+                duration: '20-25 min',
+                points: 200,
+                totalChapters: 4,
+                background: 'linear-gradient(135deg, #e74c3c, #f39c12)',
+                chapters: [
+                    {
+                        title: 'The Big Idea',
+                        scenes: [
+                            {
+                                type: 'narrative',
+                                content: 'Your tech startup has been accepted into a prestigious incubator with R50,000 in seed funding. You have three months to prove your concept and attract users.'
+                            },
+                            {
+                                type: 'character',
+                                character: 'Incubator Director',
+                                avatar: 'I',
+                                content: 'Congratulations on being selected! This funding should get you through the next three months. How do you plan to allocate it?'
+                            },
+                            {
+                                type: 'player',
+                                content: 'I need to balance product development with user acquisition while keeping enough runway for unexpected costs.'
+                            },
+                            {
+                                type: 'decision',
+                                title: 'How will you allocate your R50,000 seed funding?',
+                                options: [
+                                    {
+                                        text: 'Heavy investment in product development (70%)',
+                                        outcome: 'You focus on building the best possible product first'
+                                    },
+                                    {
+                                        text: 'Balanced approach across all areas (25/25/25/25)',
+                                        outcome: 'You maintain balance across all business functions'
+                                    },
+                                    {
+                                        text: 'Aggressive marketing to acquire users quickly (50%)',
+                                        outcome: 'You prioritize rapid user growth and market presence'
+                                    },
+                                    {
+                                        text: 'Conservative approach with large contingency (30%)',
+                                        outcome: 'You prioritize financial safety and flexibility'
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            },
+            'job-negotiation': {
+                title: 'Job Offer Negotiation',
+                description: 'Practice negotiating your salary and benefits in a realistic job offer scenario.',
+                icon: '💼',
+                difficulty: 'intermediate',
+                duration: '15-20 min',
+                points: 120,
+                totalChapters: 3,
+                background: 'linear-gradient(135deg, #27ae60, #3498db)',
+                chapters: [
+                    {
+                        title: 'The Initial Offer',
+                        scenes: [
+                            {
+                                type: 'narrative',
+                                content: 'After a successful interview process, you receive a job offer for R25,000 per month. Your research shows the industry average is R28,000 for this position.'
+                            },
+                            {
+                                type: 'character',
+                                character: 'HR Manager',
+                                avatar: 'H',
+                                content: 'We\'re excited to offer you the position! The starting salary is R25,000 with standard benefits. We\'d love to have you join our team.'
+                            },
+                            {
+                                type: 'player',
+                                content: 'I appreciate the offer and I\'m very interested in the role. I\'d like to discuss the compensation package.'
+                            },
+                            {
+                                type: 'decision',
+                                title: 'How will you respond to the initial offer?',
+                                options: [
+                                    {
+                                        text: 'Accept the offer as is to secure the position',
+                                        outcome: 'You prioritize job security over optimal compensation'
+                                    },
+                                    {
+                                        text: 'Politely ask if there\'s flexibility given market rates',
+                                        outcome: 'You negotiate professionally using market data'
+                                    },
+                                    {
+                                        text: 'Counter with R30,000 to leave room for negotiation',
+                                        outcome: 'You take an aggressive negotiation approach'
+                                    },
+                                    {
+                                        text: 'Focus on benefits and perks instead of base salary',
+                                        outcome: 'You look at the total compensation package'
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            },
+            'home-purchase': {
+                title: 'First Home Purchase',
+                description: 'Navigate the process of buying your first home, from mortgage approval to closing.',
+                icon: '🏘️',
+                difficulty: 'advanced',
+                duration: '25-30 min',
+                points: 200,
+                totalChapters: 3,
+                background: 'linear-gradient(135deg, #e67e22, #d35400)',
+                chapters: [
+                    {
+                        title: 'Mortgage Pre-approval',
+                        scenes: [
+                            {
+                                type: 'narrative',
+                                content: 'You\'ve found your dream home priced at R800,000. You have R80,000 saved for a deposit (10%) and need to secure mortgage approval.'
+                            },
+                            {
+                                type: 'character',
+                                character: 'Mortgage Advisor',
+                                avatar: 'M',
+                                content: 'Based on your financials, you qualify for a mortgage. Your monthly payment would be approximately R4,550 at current interest rates.'
+                            },
+                            {
+                                type: 'player',
+                                content: 'That\'s about 21% of my take-home pay. I need to consider if this is sustainable long-term.'
+                            },
+                            {
+                                type: 'decision',
+                                title: 'How will you proceed with the home purchase?',
+                                options: [
+                                    {
+                                        text: 'Proceed confidently - the payment is manageable',
+                                        outcome: 'You move forward with the purchase'
+                                    },
+                                    {
+                                        text: 'Look for a smaller, more affordable home',
+                                        outcome: 'You prioritize financial comfort'
+                                    },
+                                    {
+                                        text: 'Save more for a larger deposit first',
+                                        outcome: 'You delay purchase to improve your position'
+                                    },
+                                    {
+                                        text: 'Explore different mortgage terms and options',
+                                        outcome: 'You investigate all financial alternatives'
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            },
+            'investment-strategy': {
+                title: 'Investment Strategy',
+                description: 'Learn to build and manage an investment portfolio based on your goals and risk tolerance.',
+                icon: '📈',
+                difficulty: 'intermediate',
+                duration: '20-25 min',
+                points: 150,
+                totalChapters: 3,
+                background: 'linear-gradient(135deg, #9b59b6, #34495e)',
+                chapters: [
+                    {
+                        title: 'Risk Assessment',
+                        scenes: [
+                            {
+                                type: 'narrative',
+                                content: 'You\'re 30 years old with R50,000 to invest for retirement at 65. You need to determine your risk tolerance and investment strategy.'
+                            },
+                            {
+                                type: 'character',
+                                character: 'Financial Advisor',
+                                avatar: 'F',
+                                content: 'Your investment strategy should balance growth potential with your comfort level for risk. How do you typically react to market fluctuations?'
+                            },
+                            {
+                                type: 'player',
+                                content: 'I want good growth but get nervous when my investments drop significantly in value.'
+                            },
+                            {
+                                type: 'decision',
+                                title: 'What investment approach aligns with your goals and risk tolerance?',
+                                options: [
+                                    {
+                                        text: 'Aggressive growth - 100% in stocks',
+                                        outcome: 'You prioritize maximum long-term growth'
+                                    },
+                                    {
+                                        text: 'Conservative - 40% stocks, 60% bonds',
+                                        outcome: 'You prioritize capital preservation'
+                                    },
+                                    {
+                                        text: 'Balanced - 70% stocks, 30% bonds',
+                                        outcome: 'You seek growth with moderate risk'
+                                    },
+                                    {
+                                        text: 'Alternative - Property and cash investments',
+                                        outcome: 'You avoid stock market volatility'
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            }
+        };
+
+        // Initialize the application
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeApp();
+            
+            // Event listeners
+            document.getElementById('confirmAvatar').addEventListener('click', confirmAvatar);
+            document.getElementById('backFromStory').addEventListener('click', backToStories);
+            document.getElementById('restartStory').addEventListener('click', restartStory);
+            document.getElementById('continueStory').addEventListener('click', continueStory);
+            document.getElementById('resultsBack').addEventListener('click', backToStories);
+            document.getElementById('resultsNext').addEventListener('click', backToStories);
+        });
+
+        // Initialize the application
+        function initializeApp() {
+            updatePointsDisplay();
+            generateStoryCards();
+            generateAvatarOptions();
+        }
+
+        // Generate story cards
+        function generateStoryCards() {
+            const storiesGrid = document.getElementById('storiesGrid');
+            storiesGrid.innerHTML = '';
+            
+            for (const storyId in storyData) {
+                const story = storyData[storyId];
+                const progress = appState.stories[storyId].progress;
+                
+                const storyCard = document.createElement('div');
+                storyCard.className = 'story-card';
+                storyCard.dataset.storyId = storyId;
+                
+                storyCard.innerHTML = `
+                    <div class="story-card-header">
+                        <div class="story-icon">${story.icon}</div>
+                        <div class="story-difficulty ${story.difficulty}">${story.difficulty.charAt(0).toUpperCase() + story.difficulty.slice(1)}</div>
+                    </div>
+                    <h3 class="story-title">${story.title}</h3>
+                    <p class="story-description">${story.description}</p>
+                    <div class="story-meta">
+                        <span>${story.duration}</span>
+                        <span class="story-points">+${story.points} Points</span>
+                    </div>
+                    <div class="story-progress">
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: ${progress}%"></div>
+                        </div>
+                        <div class="progress-text">
+                            <span>${progress}% Complete</span>
+                            <span>${appState.stories[storyId].completed ? 'Completed' : 'In Progress'}</span>
+                        </div>
+                    </div>
+                    <button class="btn primary full-width start-story">${progress > 0 ? 'Continue Story' : 'Start Story'}</button>
+                `;
+                
+                storiesGrid.appendChild(storyCard);
+            }
+            
+            // Add event listeners to story cards
+            document.querySelectorAll('.start-story').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const storyId = this.closest('.story-card').dataset.storyId;
+                    startStory(storyId);
+                });
+            });
+        }
+
+        // Generate avatar options
+        function generateAvatarOptions() {
+            const avatarOptions = document.getElementById('avatarOptions');
+            avatarOptions.innerHTML = '';
+            
+            avatarData.forEach(avatar => {
+                const avatarOption = document.createElement('div');
+                avatarOption.className = 'avatar-option';
+                avatarOption.dataset.avatarId = avatar.id;
+                
+                avatarOption.innerHTML = `
+                    <div class="avatar-icon">${avatar.icon}</div>
+                    <div class="avatar-name">${avatar.name}</div>
+                    <div class="avatar-description">${avatar.description}</div>
+                `;
+                
+                avatarOption.addEventListener('click', function() {
+                    // Remove selection from other avatars
+                    document.querySelectorAll('.avatar-option').forEach(option => {
+                        option.classList.remove('selected');
+                    });
+                    
+                    // Select this avatar
+                    this.classList.add('selected');
+                    appState.selectedAvatar = avatar.id;
+                });
+                
+                avatarOptions.appendChild(avatarOption);
+            });
+        }
+
+        // Start a story
+        function startStory(storyId) {
+            appState.currentStory = storyId;
+            
+            // Show avatar selection if no avatar is selected
+            if (!appState.selectedAvatar) {
+                document.getElementById('storiesGrid').style.display = 'none';
+                document.getElementById('avatarSelection').classList.add('active');
+                return;
+            }
+            
+            // Otherwise, start the story directly
+            beginStory(storyId);
+        }
+
+        // Confirm avatar selection and begin story
+        function confirmAvatar() {
+            if (!appState.selectedAvatar) {
+                showToast('Please select an avatar to continue');
+                return;
+            }
+            
+            document.getElementById('avatarSelection').classList.remove('active');
+            beginStory(appState.currentStory);
+        }
+
+        // Begin the actual story
+        function beginStory(storyId) {
+            const story = storyData[storyId];
+            const storyState = appState.stories[storyId];
+            
+            // Update story display
+            document.getElementById('storyIconLarge').textContent = story.icon;
+            document.getElementById('storyTitleLarge').textContent = story.title;
+            document.getElementById('storyBackground').style.background = story.background;
+            
+            // Hide stories grid and show storytelling screen
+            document.getElementById('storiesGrid').style.display = 'none';
+            document.getElementById('storytellingScreen').classList.add('active');
+            
+            // Load the current chapter
+            loadStoryChapter(storyId, storyState.currentChapter - 1);
+        }
+
+        // Load a story chapter
+        function loadStoryChapter(storyId, chapterIndex) {
+            const story = storyData[storyId];
+            const chapter = story.chapters[chapterIndex];
+            const storyState = appState.stories[storyId];
+            
+            // Update progress
+            storyState.progress = ((chapterIndex + 1) / story.totalChapters) * 100;
+            
+            // Update progress display
+            document.getElementById('storyProgress').style.width = storyState.progress + '%';
+            document.getElementById('storyPoints').textContent = `+${storyState.points} Points`;
+            document.getElementById('storyProgressText').textContent = 
+                `Chapter ${chapterIndex + 1} of ${story.totalChapters}`;
+            
+            // Render the chapter scenes
+            renderChapterScenes(storyId, chapter);
+        }
+
+        // Render chapter scenes
+        function renderChapterScenes(storyId, chapter) {
+            const sceneContainer = document.getElementById('sceneContainer');
+            sceneContainer.innerHTML = '';
+            
+            chapter.scenes.forEach((scene, index) => {
+                setTimeout(() => {
+                    if (scene.type === 'narrative') {
+                        const narrativeElement = document.createElement('div');
+                        narrativeElement.className = 'scene-description';
+                        narrativeElement.textContent = scene.content;
+                        sceneContainer.appendChild(narrativeElement);
+                    } 
+                    else if (scene.type === 'character') {
+                        const characterElement = document.createElement('div');
+                        characterElement.className = 'character-dialog';
+                        characterElement.innerHTML = `
+                            <div class="character-avatar">${scene.avatar}</div>
+                            <div class="character-text">
+                                <strong>${scene.character}:</strong> ${scene.content}
+                            </div>
+                        `;
+                        sceneContainer.appendChild(characterElement);
+                    }
+                    else if (scene.type === 'player') {
+                        const playerElement = document.createElement('div');
+                        playerElement.className = 'player-dialog';
+                        const avatar = avatarData.find(a => a.id === appState.selectedAvatar);
+                        playerElement.innerHTML = `
+                            <div class="player-text">
+                                <strong>You (${avatar.name}):</strong> ${scene.content}
+                            </div>
+                            <div class="player-avatar">${avatar.icon}</div>
+                        `;
+                        sceneContainer.appendChild(playerElement);
+                    }
+                    else if (scene.type === 'decision') {
+                        const decisionElement = document.createElement('div');
+                        decisionElement.className = 'decision-point';
+                        decisionElement.innerHTML = `
+                            <div class="decision-title">${scene.title}</div>
+                            <div class="decision-options" id="decisionOptions">
+                                ${scene.options.map((option, i) => `
+                                    <div class="decision-option" data-option-index="${i}">
+                                        ${option.text}
+                                    </div>
+                                `).join('')}
+                            </div>
+                        `;
+                        sceneContainer.appendChild(decisionElement);
+                        
+                        // Add event listeners to decision options
+                        document.querySelectorAll('.decision-option').forEach(option => {
+                            option.addEventListener('click', function() {
+                                // Remove selection from other options
+                                document.querySelectorAll('.decision-option').forEach(opt => {
+                                    opt.classList.remove('selected');
+                                });
+                                
+                                // Select this option
+                                this.classList.add('selected');
+                            });
+                        });
+                    }
+                    
+                    // Scroll to bottom of container
+                    sceneContainer.scrollTop = sceneContainer.scrollHeight;
+                }, index * 800);
+            });
+        }
+
+        // Continue to next chapter or complete story
+        function continueStory() {
+            const storyId = appState.currentStory;
+            const storyState = appState.stories[storyId];
+            const currentChapterIndex = storyState.currentChapter - 1;
+            
+            // Check if there's a decision that needs to be made
+            const selectedOption = document.querySelector('.decision-option.selected');
+            if (!selectedOption) {
+                showToast('Please make a choice to continue');
+                return;
+            }
+            
+            // Store the choice
+            const optionIndex = parseInt(selectedOption.dataset.optionIndex);
+            appState.storyChoices[storyId][`chapter${currentChapterIndex + 1}`] = optionIndex;
+            
+            // Award points for this chapter
+            const pointsPerChapter = Math.floor(storyData[storyId].points / storyData[storyId].totalChapters);
+            storyState.points += pointsPerChapter;
+            
+            // Move to next chapter if available
+            if (storyState.currentChapter < storyData[storyId].totalChapters) {
+                storyState.currentChapter++;
+                loadStoryChapter(storyId, storyState.currentChapter - 1);
+                
+                showToast(`Chapter ${storyState.currentChapter} unlocked! +${pointsPerChapter} points`);
+            } else {
+                // Story completed
+                storyState.completed = true;
+                completeActivity(storyId, storyState.points);
+            }
+        }
+
+        // Restart story
+        function restartStory() {
+            const storyId = appState.currentStory;
+            appState.stories[storyId] = { progress: 0, currentChapter: 1, points: 0, completed: false };
+            appState.storyChoices[storyId] = {};
+            loadStoryChapter(storyId, 0);
+            showToast('Story restarted!');
+        }
+
+        // Complete an activity and show results
+        function completeActivity(storyId, pointsEarned) {
+            // Update user points
+            appState.userPoints += pointsEarned;
+            localStorage.setItem('userPoints', appState.userPoints);
+            updatePointsDisplay();
+            
+            // Hide storytelling screen and show results
+            document.getElementById('storytellingScreen').classList.remove('active');
+            
+            // Update results screen
+            const story = storyData[storyId];
+            document.getElementById('resultsTitle').textContent = `${story.title} Complete!`;
+            document.getElementById('resultsScore').textContent = '100%';
+            document.getElementById('resultsPoints').textContent = `+${pointsEarned} Points`;
+            document.getElementById('resultsIcon').textContent = '🎉';
+            
+            // Update results breakdown
+            const breakdown = document.getElementById('resultsBreakdown');
+            breakdown.innerHTML = `
+                <div class="result-item">
+                    <div class="result-label">Points Earned</div>
+                    <div class="result-value">+${pointsEarned}</div>
+                </div>
+                <div class="result-item">
+                    <div class="result-label">Completion</div>
+                    <div class="result-value">100%</div>
+                </div>
+                <div class="result-item">
+                    <div class="result-label">Difficulty</div>
+                    <div class="result-value">${story.difficulty.charAt(0).toUpperCase() + story.difficulty.slice(1)}</div>
+                </div>
+                <div class="result-item">
+                    <div class="result-label">Time Spent</div>
+                    <div class="result-value">${story.duration}</div>
+                </div>
+            `;
+            
+            // Show results screen
+            document.getElementById('resultsScreen').classList.add('active');
+            
+            showToast(`Congratulations! You earned ${pointsEarned} points!`);
+        }
+
+        // Back to stories
+        function backToStories() {
+            // Hide all screens
+            document.getElementById('avatarSelection').classList.remove('active');
+            document.getElementById('storytellingScreen').classList.remove('active');
+            document.getElementById('resultsScreen').classList.remove('active');
+            
+            // Show stories grid
+            document.getElementById('storiesGrid').style.display = 'grid';
+            
+            // Update story cards to reflect progress
+            generateStoryCards();
+        }
+
+        // Update points display
+        function updatePointsDisplay() {
+            document.getElementById('totalPoints').textContent = appState.userPoints + ' Points';
+        }
+
+        // Show toast notification
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            const toastMessage = document.getElementById('toastMessage');
+            
+            toastMessage.textContent = message;
+            toast.classList.add('show');
+            
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+    </script>
+</body>
+</html>

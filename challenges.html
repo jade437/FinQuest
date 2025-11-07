@@ -1,0 +1,1887 @@
+<<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FinQuest - Interactive Financial Challenges</title>
+    <style>
+        :root {
+            --primary: #3498db;
+            --secondary: #9b59b6;
+            --success: #27ae60;
+            --warning: #f39c12;
+            --danger: #e74c3c;
+            --dark: #2c3e50;
+            --light: #ecf0f1;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f7fa;
+            color: #333;
+        }
+        
+        .app-container {
+            display: flex;
+            min-height: 100vh;
+        }
+        
+        /* Sidebar styles */
+        .sidebar {
+            width: 260px;
+            background: linear-gradient(180deg, var(--dark) 0%, #1a2530 100%);
+            color: white;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .sidebar-header {
+            padding: 20px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .logo-icon {
+            font-size: 24px;
+        }
+        
+        .logo-text {
+            font-size: 20px;
+            font-weight: bold;
+        }
+        
+        .sidebar-content {
+            flex: 1;
+            padding: 20px 0;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 0 20px 20px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        .avatar {
+            width: 40px;
+            height: 40px;
+            background-color: var(--primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+        
+        .user-name {
+            font-weight: bold;
+        }
+        
+        .user-level {
+            font-size: 12px;
+            opacity: 0.8;
+        }
+        
+        .sidebar-nav {
+            list-style: none;
+            margin-top: 20px;
+            flex: 1;
+        }
+        
+        .sidebar-nav li {
+            margin-bottom: 5px;
+        }
+        
+        .sidebar-nav a {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 20px;
+            color: rgba(255,255,255,0.8);
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+        
+        .sidebar-nav a:hover, .sidebar-nav a.active {
+            background-color: rgba(255,255,255,0.1);
+            color: white;
+        }
+        
+        .sidebar-footer {
+            padding: 20px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        .logout-btn {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: rgba(255,255,255,0.8);
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+        
+        .logout-btn:hover {
+            color: white;
+        }
+        
+        /* Main content styles */
+        .main-content {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+        }
+        
+        .main-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+        
+        .header-left h1 {
+            font-size: 28px;
+            margin-bottom: 5px;
+        }
+        
+        .header-left p {
+            color: #666;
+        }
+        
+        .points-display {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background-color: white;
+            padding: 10px 15px;
+            border-radius: 20px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .points-icon {
+            color: #f1c40f;
+        }
+        
+        .points-value {
+            font-weight: bold;
+        }
+        
+        /* Content Tabs */
+        .content-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 10px;
+        }
+        
+        .tab-btn {
+            padding: 10px 20px;
+            background: none;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s;
+            color: #666;
+        }
+        
+        .tab-btn.active {
+            background: var(--primary);
+            color: white;
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        /* Challenges Section */
+        .challenges-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .challenge-card {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .challenge-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .challenge-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .challenge-icon {
+            font-size: 24px;
+        }
+        
+        .challenge-difficulty {
+            font-size: 12px;
+            padding: 3px 8px;
+            border-radius: 10px;
+            font-weight: bold;
+        }
+        
+        .beginner {
+            background: #e8f6f3;
+            color: var(--success);
+        }
+        
+        .intermediate {
+            background: #e8f4fd;
+            color: var(--primary);
+        }
+        
+        .advanced {
+            background: #fdedec;
+            color: var(--danger);
+        }
+        
+        .challenge-title {
+            font-size: 18px;
+            margin-bottom: 10px;
+            color: var(--dark);
+        }
+        
+        .challenge-description {
+            color: #666;
+            margin-bottom: 15px;
+            font-size: 14px;
+        }
+        
+        .challenge-meta {
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
+            color: #666;
+            margin-bottom: 15px;
+        }
+        
+        .challenge-points {
+            color: var(--warning);
+            font-weight: bold;
+        }
+        
+        .challenge-progress {
+            margin-bottom: 15px;
+        }
+        
+        /* Interactive Elements */
+        .interactive-container {
+            background: var(--light);
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+        
+        .interactive-title {
+            font-size: 18px;
+            margin-bottom: 15px;
+            color: var(--dark);
+        }
+        
+        /* Step-by-step elements */
+        .step-container {
+            margin: 20px 0;
+        }
+        
+        .step-progress {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            position: relative;
+        }
+        
+        .step-progress:before {
+            content: '';
+            position: absolute;
+            top: 15px;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: var(--light);
+            z-index: 1;
+        }
+        
+        .step-indicator {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: white;
+            border: 2px solid var(--light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .step-indicator.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+        
+        .step-indicator.completed {
+            background: var(--success);
+            color: white;
+            border-color: var(--success);
+        }
+        
+        .step-content {
+            display: none;
+            padding: 20px;
+            background: white;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        
+        .step-content.active {
+            display: block;
+        }
+        
+        .step-title {
+            font-size: 18px;
+            margin-bottom: 15px;
+            color: var(--dark);
+        }
+        
+        .step-description {
+            margin-bottom: 15px;
+            line-height: 1.6;
+        }
+        
+        .step-input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            margin-bottom: 15px;
+            font-size: 16px;
+        }
+        
+        .step-actions {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+        
+        /* Level indicators */
+        .level-indicator {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        
+        .level-badge {
+            padding: 5px 10px;
+            background: var(--primary);
+            color: white;
+            border-radius: 15px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+        
+        .level-name {
+            font-weight: bold;
+            color: var(--dark);
+        }
+        
+        /* Form elements */
+        .form-group {
+            margin-bottom: 15px;
+        }
+        
+        .form-label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+        }
+        
+        .expense-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+        
+        .expense-table th, .expense-table td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .expense-table th {
+            background: #f8f9fa;
+            font-weight: 600;
+        }
+        
+        .expense-input {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        
+        .savings-option {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px;
+            background: white;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #eee;
+        }
+        
+        .savings-option.selected {
+            border-color: var(--primary);
+            background: #e8f4fd;
+        }
+        
+        .checkbox-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .checkbox-container input {
+            width: 18px;
+            height: 18px;
+        }
+        
+        .debt-item {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            border-left: 4px solid var(--primary);
+        }
+        
+        .debt-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+        
+        .debt-name {
+            font-weight: bold;
+        }
+        
+        .debt-amount {
+            color: var(--danger);
+            font-weight: bold;
+        }
+        
+        .debt-details {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            font-size: 14px;
+        }
+        
+        .strategy-card {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: all 0.3s;
+        }
+        
+        .strategy-card:hover {
+            border-color: var(--primary);
+        }
+        
+        .strategy-card.selected {
+            border-color: var(--primary);
+            background: #e8f4fd;
+        }
+        
+        .strategy-title {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        
+        .strategy-description {
+            font-size: 14px;
+            color: #666;
+        }
+        
+        .payment-plan {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+        }
+        
+        .payment-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .payment-item:last-child {
+            border-bottom: none;
+        }
+        
+        .payment-label {
+            font-weight: 500;
+        }
+        
+        .payment-value {
+            font-weight: bold;
+        }
+        
+        .grocery-category {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+        
+        .category-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+        
+        .category-name {
+            font-weight: bold;
+        }
+        
+        .category-budget {
+            color: var(--primary);
+            font-weight: bold;
+        }
+        
+        .grocery-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        
+        .grocery-item:last-child {
+            border-bottom: none;
+        }
+        
+        .item-name {
+            flex: 1;
+        }
+        
+        .item-quantity, .item-price {
+            width: 80px;
+            text-align: right;
+        }
+        
+        /* Buttons */
+        .btn {
+            padding: 12px 24px;
+            border-radius: 5px;
+            border: none;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+            font-size: 16px;
+        }
+        
+        .btn.primary {
+            background-color: var(--primary);
+            color: white;
+        }
+        
+        .btn.secondary {
+            background-color: var(--secondary);
+            color: white;
+        }
+        
+        .btn.success {
+            background-color: var(--success);
+            color: white;
+        }
+        
+        .btn.outline {
+            background-color: transparent;
+            border: 1px solid var(--primary);
+            color: var(--primary);
+        }
+        
+        .btn:hover {
+            opacity: 0.9;
+            transform: translateY(-2px);
+        }
+        
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        /* Toast Notification */
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: var(--dark);
+            color: white;
+            padding: 15px 20px;
+            border-radius: 5px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+            z-index: 1001;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transform: translateY(100px);
+            opacity: 0;
+            transition: transform 0.3s, opacity 0.3s;
+        }
+        
+        .toast.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+        
+        .toast-icon {
+            font-size: 20px;
+        }
+        
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .modal-content {
+            background: white;
+            border-radius: 10px;
+            width: 90%;
+            max-width: 800px;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 5px 25px rgba(0,0,0,0.2);
+        }
+        
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .modal-header h3 {
+            color: var(--dark);
+        }
+        
+        .close-modal {
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: #666;
+        }
+        
+        .modal-body {
+            padding: 20px;
+        }
+        
+        .modal-footer {
+            padding: 20px;
+            border-top: 1px solid #eee;
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+        }
+        
+        /* Progress Bar */
+        .progress-bar {
+            height: 10px;
+            background: var(--light);
+            border-radius: 5px;
+            overflow: hidden;
+            margin-bottom: 10px;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: var(--success);
+            border-radius: 5px;
+            transition: width 0.5s;
+        }
+        
+        .progress-text {
+            display: flex;
+            justify-content: space-between;
+            font-size: 14px;
+            color: #666;
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .app-container {
+                flex-direction: column;
+            }
+            
+            .sidebar {
+                width: 100%;
+                height: auto;
+            }
+            
+            .content-tabs {
+                flex-wrap: wrap;
+            }
+            
+            .challenges-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .step-actions {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .btn.full-width {
+                width: 100%;
+            }
+            
+            .debt-details {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar -->
+        <nav class="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <span class="logo-icon">💰</span>
+                    <span class="logo-text">FinQuest</span>
+                </div>
+            </div>
+
+            <div class="sidebar-content">
+                <div class="user-profile">
+                    <div class="avatar">TJ</div>
+                    <div class="user-info">
+                        <div class="user-name">Thabo Johnson</div>
+                        <div class="user-level">Level 2 Financial Builder</div>
+                    </div>
+                </div>
+
+                <ul class="sidebar-nav">
+                    <li><a href="dashboard.html"><span class="nav-icon">📊</span> Dashboard</a></li>
+                    <li><a href="challenges.html" class="active"><span class="nav-icon">🎯</span> Challenges</a></li>
+                    <li><a href="learn.html"><span class="nav-icon">📚</span> Learn</a></li>
+                    <li><a href="community.html"><span class="nav-icon">👥</span> Community</a></li>
+                    <li><a href="profile.html"><span class="nav-icon">👤</span> Profile</a></li>
+                </ul>
+
+                <div class="sidebar-footer">
+                    <a href="#" id="logoutBtn" class="logout-btn">
+                        <span class="nav-icon">🚪</span> Logout
+                    </a>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <header class="main-header">
+                <div class="header-left">
+                    <h1>Financial Challenges</h1>
+                    <p>Complete interactive challenges to improve your financial skills</p>
+                </div>
+                <div class="header-right">
+                    <div class="points-display">
+                        <span class="points-icon">⭐</span>
+                        <span class="points-value" id="totalPoints">980 Points</span>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Challenges Section -->
+            <div class="tab-content active" id="challenges">
+                <h2 style="margin-bottom: 20px;">Financial Challenges</h2>
+                <p style="margin-bottom: 20px; color: #666;">Test your financial knowledge with these real-world challenges</p>
+                
+                <div class="challenges-grid">
+                    <!-- Emergency Fund Builder -->
+                    <div class="challenge-card">
+                        <div class="challenge-header">
+                            <div class="challenge-icon">🏠</div>
+                            <div class="challenge-difficulty advanced">Advanced</div>
+                        </div>
+                        <h3 class="challenge-title">Emergency Fund Builder</h3>
+                        <p class="challenge-description">Build a 3-month emergency fund of R15,000 within 6 months through disciplined saving.</p>
+                        <div class="challenge-meta">
+                            <span>6 months</span>
+                            <span class="challenge-points">+500 Points</span>
+                        </div>
+                        <div class="challenge-progress">
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 0%"></div>
+                            </div>
+                            <div class="progress-text">
+                                <span>Not started</span>
+                                <span>Available now</span>
+                            </div>
+                        </div>
+                        <button class="btn outline full-width start-challenge" data-challenge="emergency-fund">Start Challenge</button>
+                    </div>
+                    
+                    <!-- Debt-Free Journey -->
+                    <div class="challenge-card">
+                        <div class="challenge-header">
+                            <div class="challenge-icon">📈</div>
+                            <div class="challenge-difficulty intermediate">Intermediate</div>
+                        </div>
+                        <h3 class="challenge-title">Debt-Free Journey</h3>
+                        <p class="challenge-description">Create and execute a plan to pay off R5,000 of debt using either snowball or avalanche method.</p>
+                        <div class="challenge-meta">
+                            <span>6 months</span>
+                            <span class="challenge-points">+300 Points</span>
+                        </div>
+                        <div class="challenge-progress">
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 0%"></div>
+                            </div>
+                            <div class="progress-text">
+                                <span>Not started</span>
+                                <span>Available now</span>
+                            </div>
+                        </div>
+                        <button class="btn outline full-width start-challenge" data-challenge="debt-free">Start Challenge</button>
+                    </div>
+                    
+                    <!-- Smart Shopping Spree -->
+                    <div class="challenge-card">
+                        <div class="challenge-header">
+                            <div class="challenge-icon">🛒</div>
+                            <div class="challenge-difficulty beginner">Beginner</div>
+                        </div>
+                        <h3 class="challenge-title">Smart Shopping Spree</h3>
+                        <p class="challenge-description">Plan and execute a month of grocery shopping while staying 15% under your usual budget.</p>
+                        <div class="challenge-meta">
+                            <span>1 month</span>
+                            <span class="challenge-points">+100 Points</span>
+                        </div>
+                        <div class="challenge-progress">
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 0%"></div>
+                            </div>
+                            <div class="progress-text">
+                                <span>Not started</span>
+                                <span>Available now</span>
+                            </div>
+                        </div>
+                        <button class="btn outline full-width start-challenge" data-challenge="smart-shopping">Start Challenge</button>
+                    </div>
+                    
+                    <!-- Expense Tracking -->
+                    <div class="challenge-card">
+                        <div class="challenge-header">
+                            <div class="challenge-icon">📝</div>
+                            <div class="challenge-difficulty beginner">Beginner</div>
+                        </div>
+                        <h3 class="challenge-title">Expense Tracking</h3>
+                        <p class="challenge-description">Track all your expenses for one week to understand your spending patterns.</p>
+                        <div class="challenge-meta">
+                            <span>1 week</span>
+                            <span class="challenge-points">+50 Points</span>
+                        </div>
+                        <div class="challenge-progress">
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 0%"></div>
+                            </div>
+                            <div class="progress-text">
+                                <span>Not started</span>
+                                <span>Available now</span>
+                            </div>
+                        </div>
+                        <button class="btn outline full-width start-challenge" data-challenge="expense-tracking">Start Challenge</button>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Step-by-Step Challenge Modal -->
+    <div id="stepChallengeModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="stepChallengeTitle">Challenge Steps</h3>
+                <button class="close-modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="level-indicator">
+                    <span class="level-badge" id="stepLevelBadge">Level 1</span>
+                    <span class="level-name" id="stepLevelName">Basic Budgeting</span>
+                </div>
+                
+                <div class="step-progress" id="stepProgress">
+                    <!-- Step indicators will be generated here -->
+                </div>
+                
+                <div class="step-container" id="stepContainer">
+                    <!-- Step content will be loaded here -->
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn outline" id="closeStepChallenge">Close</button>
+                <button class="btn primary" id="prevStep">Previous</button>
+                <button class="btn primary" id="nextStep">Next Step</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="toast">
+        <span class="toast-icon" id="toastIcon">✅</span>
+        <span id="toastMessage">Action completed successfully!</span>
+    </div>
+
+    <script>
+        // Application state
+        const appState = {
+            userPoints: parseInt(localStorage.getItem('userPoints')) || 980,
+            currentChallenge: null,
+            currentStep: 0,
+            challenges: {
+                'emergency-fund': { progress: 0, started: false, level: 3 },
+                'debt-free': { progress: 0, started: false, level: 2 },
+                'smart-shopping': { progress: 0, started: false, level: 1 },
+                'expense-tracking': { progress: 0, started: false, level: 1 }
+            },
+            // Store user inputs for each challenge
+            userInputs: {
+                'emergency-fund': {},
+                'debt-free': {},
+                'smart-shopping': {},
+                'expense-tracking': {}
+            }
+        };
+
+        // Challenge data with detailed steps
+        const challengeData = {
+            'emergency-fund': {
+                title: 'Emergency Fund Builder',
+                description: 'Build a 3-month emergency fund of R15,000 within 6 months through disciplined saving.',
+                points: 500,
+                duration: '6 months',
+                level: 3,
+                levelName: 'Advanced Savings',
+                steps: [
+                    {
+                        title: 'Calculate Your Emergency Fund Goal',
+                        description: 'Determine how much you need for 3 months of essential expenses.',
+                        interactive: {
+                            type: 'expense-calculator',
+                            categories: [
+                                { name: 'Housing (rent/mortgage)', default: 5000 },
+                                { name: 'Utilities (electricity, water, internet)', default: 1500 },
+                                { name: 'Food & Groceries', default: 2000 },
+                                { name: 'Transportation', default: 1000 },
+                                { name: 'Insurance & Medical', default: 800 },
+                                { name: 'Debt Payments', default: 700 },
+                                { name: 'Other Essentials', default: 500 }
+                            ]
+                        }
+                    },
+                    {
+                        title: 'Set Your Savings Timeline',
+                        description: 'Plan how quickly you want to build your emergency fund.',
+                        interactive: {
+                            type: 'timeline-planner',
+                            goal: 15000,
+                            defaultTimeline: 6
+                        }
+                    },
+                    {
+                        title: 'Identify Savings Sources',
+                        description: 'Find areas in your budget where you can save money.',
+                        interactive: {
+                            type: 'savings-sources',
+                            options: [
+                                { name: 'Reduce dining out', potential: 400 },
+                                { name: 'Cancel unused subscriptions', potential: 200 },
+                                { name: 'Reduce entertainment spending', potential: 300 },
+                                { name: 'Save windfalls (bonuses, tax refunds)', potential: 1000 },
+                                { name: 'Side income', potential: 800 }
+                            ]
+                        }
+                    },
+                    {
+                        title: 'Set Up Automatic Transfers',
+                        description: 'Automate your savings to ensure consistency.',
+                        interactive: {
+                            type: 'auto-transfer',
+                            frequencyOptions: ['Weekly', 'Bi-weekly', 'Monthly'],
+                            defaultAmount: 2500
+                        }
+                    },
+                    {
+                        title: 'Track Your Progress',
+                        description: 'Monitor your emergency fund growth and adjust if needed.',
+                        interactive: {
+                            type: 'progress-tracker',
+                            goal: 15000,
+                            current: 0
+                        }
+                    }
+                ]
+            },
+            'debt-free': {
+                title: 'Debt-Free Journey',
+                description: 'Create and execute a plan to pay off R5,000 of debt using either snowball or avalanche method.',
+                points: 300,
+                duration: '6 months',
+                level: 2,
+                levelName: 'Debt Management',
+                steps: [
+                    {
+                        title: 'List All Your Debts',
+                        description: 'Create a complete list of all your debts with amounts, interest rates, and minimum payments.',
+                        interactive: {
+                            type: 'debt-list',
+                            debts: [
+                                { name: 'Credit Card', amount: 2500, interest: 18, minPayment: 75 },
+                                { name: 'Personal Loan', amount: 2000, interest: 12, minPayment: 100 },
+                                { name: 'Store Account', amount: 500, interest: 22, minPayment: 25 }
+                            ]
+                        }
+                    },
+                    {
+                        title: 'Choose Your Debt Strategy',
+                        description: 'Select between the debt snowball (pay smallest debts first) or avalanche (pay highest interest first) method.',
+                        interactive: {
+                            type: 'strategy-choice',
+                            options: [
+                                { 
+                                    name: 'Snowball Method', 
+                                    description: 'Pay off smallest debts first for psychological wins and motivation',
+                                    pros: ['Quick wins keep you motivated', 'Simpler to track progress'],
+                                    cons: ['May pay more interest overall']
+                                },
+                                { 
+                                    name: 'Avalanche Method', 
+                                    description: 'Pay off highest interest debts first to save money on interest',
+                                    pros: ['Saves money on interest', 'Debt paid off faster mathematically'],
+                                    cons: ['May take longer to see first debt eliminated']
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        title: 'Create Your Payment Plan',
+                        description: 'Based on your chosen strategy, create a monthly payment plan.',
+                        interactive: {
+                            type: 'payment-plan',
+                            totalDebt: 5000,
+                            monthlyBudget: 800
+                        }
+                    },
+                    {
+                        title: 'Set Up Payment System',
+                        description: 'Automate your debt payments to ensure consistency.',
+                        interactive: {
+                            type: 'payment-system',
+                            accounts: ['Credit Card', 'Personal Loan', 'Store Account']
+                        }
+                    },
+                    {
+                        title: 'Track Your Debt Reduction',
+                        description: 'Monitor your progress and celebrate milestones.',
+                        interactive: {
+                            type: 'debt-tracker',
+                            startingDebt: 5000,
+                            currentDebt: 5000
+                        }
+                    }
+                ]
+            },
+            'smart-shopping': {
+                title: 'Smart Shopping Spree',
+                description: 'Plan and execute a month of grocery shopping while staying 15% under your usual budget.',
+                points: 100,
+                duration: '1 month',
+                level: 1,
+                levelName: 'Basic Budgeting',
+                steps: [
+                    {
+                        title: 'Record Current Grocery Spending',
+                        description: 'Track your grocery spending for one week to establish a baseline.',
+                        interactive: {
+                            type: 'grocery-tracker',
+                            days: 7,
+                            categories: ['Produce', 'Meat & Protein', 'Dairy & Eggs', 'Pantry Staples', 'Household Items']
+                        }
+                    },
+                    {
+                        title: 'Create Monthly Meal Plan',
+                        description: 'Plan meals for the entire month to reduce waste and impulse buys.',
+                        interactive: {
+                            type: 'meal-planner',
+                            weeks: 4,
+                            budget: 1200
+                        }
+                    },
+                    {
+                        title: 'Build Your Shopping List',
+                        description: 'Create a detailed shopping list based on your meal plan.',
+                        interactive: {
+                            type: 'shopping-list',
+                            categories: ['Produce', 'Meat & Protein', 'Dairy & Eggs', 'Pantry Staples', 'Household Items']
+                        }
+                    },
+                    {
+                        title: 'Implement Money-Saving Strategies',
+                        description: 'Use proven strategies to reduce your grocery bill.',
+                        interactive: {
+                            type: 'savings-strategies',
+                            strategies: [
+                                { name: 'Use digital coupons and loyalty programs', impact: 'High' },
+                                { name: 'Buy seasonal produce', impact: 'Medium' },
+                                { name: 'Choose store brands over name brands', impact: 'High' },
+                                { name: 'Buy in bulk for frequently used items', impact: 'Medium' },
+                                { name: 'Plan meals around weekly sales', impact: 'High' }
+                            ]
+                        }
+                    },
+                    {
+                        title: 'Review Your Savings',
+                        description: 'Compare your actual spending to your previous grocery budget.',
+                        interactive: {
+                            type: 'savings-review',
+                            previousBudget: 1500,
+                            targetBudget: 1275
+                        }
+                    }
+                ]
+            },
+            'expense-tracking': {
+                title: 'Expense Tracking',
+                description: 'Track all your expenses for one week to understand your spending patterns.',
+                points: 50,
+                duration: '1 week',
+                level: 1,
+                levelName: 'Financial Awareness',
+                steps: [
+                    {
+                        title: 'Set Up Your Tracking System',
+                        description: 'Choose how you will track your expenses for the next 7 days.',
+                        interactive: {
+                            type: 'tracking-method',
+                            options: [
+                                { name: 'Mobile App', description: 'Use a budgeting app on your phone' },
+                                { name: 'Spreadsheet', description: 'Track expenses in Excel or Google Sheets' },
+                                { name: 'Notebook', description: 'Old-school pen and paper method' },
+                                { name: 'Receipt Collection', description: 'Keep all receipts and log them daily' }
+                            ]
+                        }
+                    },
+                    {
+                        title: 'Record Daily Expenses',
+                        description: 'Track every expense for the first 3 days.',
+                        interactive: {
+                            type: 'expense-recorder',
+                            days: 3,
+                            categories: ['Food & Dining', 'Transportation', 'Entertainment', 'Shopping', 'Bills', 'Other']
+                        }
+                    },
+                    {
+                        title: 'Categorize Your Spending',
+                        description: 'Organize your expenses into categories to identify patterns.',
+                        interactive: {
+                            type: 'expense-categorizer',
+                            expenses: [
+                                { description: 'Lunch at work', amount: 85, category: '' },
+                                { description: 'Uber to meeting', amount: 65, category: '' },
+                                { description: 'Netflix subscription', amount: 99, category: '' },
+                                { description: 'Groceries', amount: 350, category: '' },
+                                { description: 'Coffee with friends', amount: 45, category: '' }
+                            ],
+                            categories: ['Food & Dining', 'Transportation', 'Entertainment', 'Shopping', 'Bills', 'Other']
+                        }
+                    },
+                    {
+                        title: 'Analyze Your Spending Patterns',
+                        description: 'Review where your money is going and identify areas for improvement.',
+                        interactive: {
+                            type: 'spending-analysis',
+                            categories: ['Food & Dining', 'Transportation', 'Entertainment', 'Shopping', 'Bills', 'Other'],
+                            amounts: [580, 320, 250, 180, 1200, 150]
+                        }
+                    },
+                    {
+                        title: 'Create an Action Plan',
+                        description: 'Based on your findings, create a plan to improve your spending habits.',
+                        interactive: {
+                            type: 'action-plan',
+                            areas: [
+                                { category: 'Food & Dining', current: 580, goal: 450, strategy: 'Pack lunch 3 days a week' },
+                                { category: 'Entertainment', current: 250, goal: 150, strategy: 'Find free activities' },
+                                { category: 'Shopping', current: 180, goal: 100, strategy: 'Implement 24-hour rule for purchases' }
+                            ]
+                        }
+                    }
+                ]
+            }
+        };
+
+        // Initialize the application
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeApp();
+            
+            // Event listeners for challenges
+            document.querySelectorAll('.start-challenge').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    startChallenge(this.dataset.challenge);
+                });
+            });
+            
+            // Event listeners for step-by-step challenges
+            document.getElementById('prevStep').addEventListener('click', previousStep);
+            document.getElementById('nextStep').addEventListener('click', nextStep);
+            document.getElementById('closeStepChallenge').addEventListener('click', closeStepChallengeModal);
+            
+            // Close modal when clicking outside
+            window.addEventListener('click', function(e) {
+                if (e.target.classList.contains('modal')) {
+                    closeStepChallengeModal();
+                }
+            });
+        });
+
+        // Initialize the application
+        function initializeApp() {
+            updatePointsDisplay();
+        }
+
+        // Start a challenge
+        function startChallenge(challengeId) {
+            appState.currentChallenge = challengeId;
+            
+            // Mark challenge as started if not already
+            if (!appState.challenges[challengeId].started) {
+                appState.challenges[challengeId].started = true;
+                appState.challenges[challengeId].progress = 5;
+                updateChallengeProgress(challengeId);
+            }
+            
+            // Open the step-by-step modal
+            openStepChallenge();
+        }
+
+        // Open step-by-step challenge modal
+        function openStepChallenge() {
+            const challengeId = appState.currentChallenge;
+            const challenge = challengeData[challengeId];
+            
+            // Reset to first step
+            appState.currentStep = 0;
+            
+            // Update modal title and level
+            document.getElementById('stepChallengeTitle').textContent = challenge.title;
+            document.getElementById('stepLevelBadge').textContent = `Level ${challenge.level}`;
+            document.getElementById('stepLevelName').textContent = challenge.levelName;
+            
+            // Generate step progress indicators
+            generateStepProgress(challenge.steps.length);
+            
+            // Load the first step
+            loadStepContent(challenge.steps[0]);
+            
+            // Show modal
+            document.getElementById('stepChallengeModal').style.display = 'flex';
+        }
+
+        // Generate step progress indicators
+        function generateStepProgress(totalSteps) {
+            const stepProgress = document.getElementById('stepProgress');
+            stepProgress.innerHTML = '';
+            
+            for (let i = 0; i < totalSteps; i++) {
+                const indicator = document.createElement('div');
+                indicator.className = 'step-indicator';
+                if (i === 0) {
+                    indicator.classList.add('active');
+                }
+                indicator.textContent = i + 1;
+                stepProgress.appendChild(indicator);
+            }
+        }
+
+        // Load step content
+        function loadStepContent(step) {
+            const stepContainer = document.getElementById('stepContainer');
+            
+            let content = `
+                <div class="step-content active">
+                    <h4 class="step-title">${step.title}</h4>
+                    <p class="step-description">${step.description}</p>
+            `;
+            
+            // Add interactive elements based on type
+            if (step.interactive) {
+                if (step.interactive.type === 'expense-calculator') {
+                    content += buildExpenseCalculator(step.interactive);
+                } else if (step.interactive.type === 'timeline-planner') {
+                    content += buildTimelinePlanner(step.interactive);
+                } else if (step.interactive.type === 'savings-sources') {
+                    content += buildSavingsSources(step.interactive);
+                } else if (step.interactive.type === 'debt-list') {
+                    content += buildDebtList(step.interactive);
+                } else if (step.interactive.type === 'strategy-choice') {
+                    content += buildStrategyChoice(step.interactive);
+                } else if (step.interactive.type === 'grocery-tracker') {
+                    content += buildGroceryTracker(step.interactive);
+                } else if (step.interactive.type === 'tracking-method') {
+                    content += buildTrackingMethod(step.interactive);
+                }
+                // Add other interactive types as needed
+            }
+            
+            content += `</div>`;
+            
+            stepContainer.innerHTML = content;
+            
+            // Add event listeners to interactive elements
+            addStepEventListeners(step.interactive.type);
+            
+            // Update step progress indicators
+            updateStepProgress();
+        }
+
+        // Build expense calculator
+        function buildExpenseCalculator(interactive) {
+            let html = `
+                <div class="interactive-container">
+                    <h5>Calculate Your Essential Expenses</h5>
+                    <p>Enter your monthly expenses for each category:</p>
+                    <table class="expense-table">
+                        <thead>
+                            <tr>
+                                <th>Category</th>
+                                <th>Monthly Amount (R)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+            `;
+            
+            interactive.categories.forEach(category => {
+                html += `
+                    <tr>
+                        <td>${category.name}</td>
+                        <td><input type="number" class="expense-input" value="${category.default}" data-category="${category.name}"></td>
+                    </tr>
+                `;
+            });
+            
+            html += `
+                        </tbody>
+                    </table>
+                    <div class="form-group" style="margin-top: 15px;">
+                        <button class="btn primary" id="calculateTotal">Calculate Total</button>
+                    </div>
+                    <div id="expenseTotal" style="display: none; margin-top: 15px; padding: 15px; background: white; border-radius: 8px;">
+                        <h5>Your 3-Month Emergency Fund Goal: <span id="fundGoal">R0</span></h5>
+                        <p>This is based on your essential monthly expenses multiplied by 3.</p>
+                    </div>
+                </div>
+            `;
+            
+            return html;
+        }
+
+        // Build timeline planner
+        function buildTimelinePlanner(interactive) {
+            return `
+                <div class="interactive-container">
+                    <h5>Set Your Savings Timeline</h5>
+                    <p>Your emergency fund goal: R${interactive.goal.toLocaleString()}</p>
+                    <div class="form-group">
+                        <label class="form-label">How many months would you like to take to build your emergency fund?</label>
+                        <input type="range" min="3" max="12" value="${interactive.defaultTimeline}" class="step-input" id="timelineSlider">
+                        <div style="display: flex; justify-content: space-between;">
+                            <span>3 months</span>
+                            <span id="timelineValue">${interactive.defaultTimeline} months</span>
+                            <span>12 months</span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Monthly savings needed:</label>
+                        <div style="font-size: 24px; font-weight: bold; color: var(--primary);" id="monthlySavings">
+                            R${Math.ceil(interactive.goal / interactive.defaultTimeline).toLocaleString()}
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Build savings sources selector
+        function buildSavingsSources(interactive) {
+            let html = `
+                <div class="interactive-container">
+                    <h5>Identify Potential Savings</h5>
+                    <p>Select areas where you can reduce spending to fund your emergency savings:</p>
+            `;
+            
+            interactive.options.forEach(option => {
+                html += `
+                    <div class="savings-option">
+                        <div class="checkbox-container">
+                            <input type="checkbox" id="savings-${option.name.replace(/\s+/g, '-')}" data-amount="${option.potential}">
+                            <label for="savings-${option.name.replace(/\s+/g, '-')}">${option.name}</label>
+                        </div>
+                        <span>Potential: R${option.potential}/month</span>
+                    </div>
+                `;
+            });
+            
+            html += `
+                    <div style="margin-top: 15px; padding: 15px; background: white; border-radius: 8px;">
+                        <div style="display: flex; justify-content: space-between;">
+                            <span>Total monthly savings potential:</span>
+                            <span id="totalSavingsPotential">R0</span>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            return html;
+        }
+
+        // Build debt list
+        function buildDebtList(interactive) {
+            let html = `
+                <div class="interactive-container">
+                    <h5>Your Current Debts</h5>
+                    <p>Review and update your debt information:</p>
+            `;
+            
+            interactive.debts.forEach(debt => {
+                html += `
+                    <div class="debt-item">
+                        <div class="debt-header">
+                            <span class="debt-name">${debt.name}</span>
+                            <span class="debt-amount">R${debt.amount}</span>
+                        </div>
+                        <div class="debt-details">
+                            <div>
+                                <span>Interest Rate: ${debt.interest}%</span>
+                            </div>
+                            <div>
+                                <span>Minimum Payment: R${debt.minPayment}</span>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            html += `
+                    <div style="margin-top: 15px; padding: 15px; background: white; border-radius: 8px;">
+                        <div style="display: flex; justify-content: space-between; font-weight: bold;">
+                            <span>Total Debt:</span>
+                            <span>R${interactive.debts.reduce((sum, debt) => sum + debt.amount, 0)}</span>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            return html;
+        }
+
+        // Build strategy choice
+        function buildStrategyChoice(interactive) {
+            let html = `
+                <div class="interactive-container">
+                    <h5>Choose Your Debt Repayment Strategy</h5>
+                    <p>Select the method that works best for your situation:</p>
+            `;
+            
+            interactive.options.forEach((option, index) => {
+                html += `
+                    <div class="strategy-card" data-strategy="${option.name}">
+                        <div class="strategy-title">${option.name}</div>
+                        <div class="strategy-description">${option.description}</div>
+                        <div style="margin-top: 10px;">
+                            <div><strong>Pros:</strong> ${option.pros.join(', ')}</div>
+                            <div><strong>Cons:</strong> ${option.cons.join(', ')}</div>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            html += `</div>`;
+            
+            return html;
+        }
+
+        // Build grocery tracker
+        function buildGroceryTracker(interactive) {
+            let html = `
+                <div class="interactive-container">
+                    <h5>Track Your Grocery Spending</h5>
+                    <p>Record your grocery expenses for ${interactive.days} days:</p>
+                    <table class="expense-table">
+                        <thead>
+                            <tr>
+                                <th>Category</th>
+            `;
+            
+            for (let i = 1; i <= interactive.days; i++) {
+                html += `<th>Day ${i}</th>`;
+            }
+            
+            html += `
+                                <th>Total</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+            `;
+            
+            interactive.categories.forEach(category => {
+                html += `<tr><td>${category}</td>`;
+                
+                for (let i = 1; i <= interactive.days; i++) {
+                    html += `<td><input type="number" class="expense-input" placeholder="R0" data-category="${category}" data-day="${i}"></td>`;
+                }
+                
+                html += `<td id="total-${category.replace(/\s+/g, '-')}">R0</td></tr>`;
+            });
+            
+            html += `
+                        </tbody>
+                    </table>
+                    <div style="margin-top: 15px; padding: 15px; background: white; border-radius: 8px;">
+                        <div style="display: flex; justify-content: space-between; font-weight: bold;">
+                            <span>Weekly Total:</span>
+                            <span id="weeklyTotal">R0</span>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            return html;
+        }
+
+        // Build tracking method selector
+        function buildTrackingMethod(interactive) {
+            let html = `
+                <div class="interactive-container">
+                    <h5>Choose Your Tracking Method</h5>
+                    <p>Select how you'd like to track your expenses:</p>
+            `;
+            
+            interactive.options.forEach(option => {
+                html += `
+                    <div class="strategy-card" data-method="${option.name}">
+                        <div class="strategy-title">${option.name}</div>
+                        <div class="strategy-description">${option.description}</div>
+                    </div>
+                `;
+            });
+            
+            html += `</div>`;
+            
+            return html;
+        }
+
+        // Add event listeners for step interactive elements
+        function addStepEventListeners(interactiveType) {
+            if (interactiveType === 'expense-calculator') {
+                document.getElementById('calculateTotal').addEventListener('click', calculateExpenseTotal);
+            } else if (interactiveType === 'timeline-planner') {
+                const slider = document.getElementById('timelineSlider');
+                slider.addEventListener('input', updateTimeline);
+            } else if (interactiveType === 'savings-sources') {
+                document.querySelectorAll('.savings-option input[type="checkbox"]').forEach(checkbox => {
+                    checkbox.addEventListener('change', updateSavingsPotential);
+                });
+            } else if (interactiveType === 'strategy-choice') {
+                document.querySelectorAll('.strategy-card').forEach(card => {
+                    card.addEventListener('click', selectStrategy);
+                });
+            } else if (interactiveType === 'grocery-tracker') {
+                document.querySelectorAll('.expense-input').forEach(input => {
+                    input.addEventListener('input', updateGroceryTotals);
+                });
+            } else if (interactiveType === 'tracking-method') {
+                document.querySelectorAll('.strategy-card').forEach(card => {
+                    card.addEventListener('click', selectTrackingMethod);
+                });
+            }
+        }
+
+        // Calculate expense total for emergency fund
+        function calculateExpenseTotal() {
+            let total = 0;
+            document.querySelectorAll('.expense-input').forEach(input => {
+                total += parseInt(input.value) || 0;
+            });
+            
+            const emergencyFundGoal = total * 3;
+            document.getElementById('fundGoal').textContent = `R${emergencyFundGoal.toLocaleString()}`;
+            document.getElementById('expenseTotal').style.display = 'block';
+            
+            // Save to user inputs
+            if (!appState.userInputs['emergency-fund']) appState.userInputs['emergency-fund'] = {};
+            appState.userInputs['emergency-fund'].emergencyFundGoal = emergencyFundGoal;
+        }
+
+        // Update timeline for emergency fund
+        function updateTimeline() {
+            const slider = document.getElementById('timelineSlider');
+            const months = parseInt(slider.value);
+            document.getElementById('timelineValue').textContent = `${months} months`;
+            
+            const goal = 15000; // R15,000 emergency fund goal
+            const monthlySavings = Math.ceil(goal / months);
+            document.getElementById('monthlySavings').textContent = `R${monthlySavings.toLocaleString()}`;
+            
+            // Save to user inputs
+            if (!appState.userInputs['emergency-fund']) appState.userInputs['emergency-fund'] = {};
+            appState.userInputs['emergency-fund'].timeline = months;
+            appState.userInputs['emergency-fund'].monthlySavings = monthlySavings;
+        }
+
+        // Update savings potential calculation
+        function updateSavingsPotential() {
+            let total = 0;
+            document.querySelectorAll('.savings-option input[type="checkbox"]:checked').forEach(checkbox => {
+                total += parseInt(checkbox.dataset.amount);
+            });
+            
+            document.getElementById('totalSavingsPotential').textContent = `R${total}`;
+            
+            // Save to user inputs
+            if (!appState.userInputs['emergency-fund']) appState.userInputs['emergency-fund'] = {};
+            appState.userInputs['emergency-fund'].savingsPotential = total;
+        }
+
+        // Select debt repayment strategy
+        function selectStrategy() {
+            document.querySelectorAll('.strategy-card').forEach(card => {
+                card.classList.remove('selected');
+            });
+            this.classList.add('selected');
+            
+            // Save to user inputs
+            if (!appState.userInputs['debt-free']) appState.userInputs['debt-free'] = {};
+            appState.userInputs['debt-free'].strategy = this.dataset.strategy;
+        }
+
+        // Update grocery totals
+        function updateGroceryTotals() {
+            // Calculate category totals
+            const categories = {};
+            document.querySelectorAll('.expense-input').forEach(input => {
+                const category = input.dataset.category;
+                const day = input.dataset.day;
+                const value = parseInt(input.value) || 0;
+                
+                if (!categories[category]) categories[category] = {};
+                categories[category][day] = value;
+            });
+            
+            // Update category totals
+            let weeklyTotal = 0;
+            for (const category in categories) {
+                let categoryTotal = 0;
+                for (const day in categories[category]) {
+                    categoryTotal += categories[category][day];
+                }
+                document.getElementById(`total-${category.replace(/\s+/g, '-')}`).textContent = `R${categoryTotal}`;
+                weeklyTotal += categoryTotal;
+            }
+            
+            // Update weekly total
+            document.getElementById('weeklyTotal').textContent = `R${weeklyTotal}`;
+            
+            // Save to user inputs
+            if (!appState.userInputs['smart-shopping']) appState.userInputs['smart-shopping'] = {};
+            appState.userInputs['smart-shopping'].weeklyGrocerySpending = weeklyTotal;
+        }
+
+        // Select tracking method
+        function selectTrackingMethod() {
+            document.querySelectorAll('.strategy-card').forEach(card => {
+                card.classList.remove('selected');
+            });
+            this.classList.add('selected');
+            
+            // Save to user inputs
+            if (!appState.userInputs['expense-tracking']) appState.userInputs['expense-tracking'] = {};
+            appState.userInputs['expense-tracking'].trackingMethod = this.dataset.method;
+        }
+
+        // Update step progress indicators
+        function updateStepProgress() {
+            const indicators = document.querySelectorAll('.step-indicator');
+            indicators.forEach((indicator, index) => {
+                indicator.classList.remove('active', 'completed');
+                if (index < appState.currentStep) {
+                    indicator.classList.add('completed');
+                } else if (index === appState.currentStep) {
+                    indicator.classList.add('active');
+                }
+            });
+            
+            // Update button states
+            document.getElementById('prevStep').disabled = appState.currentStep === 0;
+            
+            const challenge = challengeData[appState.currentChallenge];
+            document.getElementById('nextStep').textContent = 
+                appState.currentStep === challenge.steps.length - 1 ? 'Complete Challenge' : 'Next Step';
+        }
+
+        // Navigate to previous step
+        function previousStep() {
+            if (appState.currentStep > 0) {
+                appState.currentStep--;
+                const challenge = challengeData[appState.currentChallenge];
+                loadStepContent(challenge.steps[appState.currentStep]);
+            }
+        }
+
+        // Navigate to next step
+        function nextStep() {
+            const challenge = challengeData[appState.currentChallenge];
+            
+            if (appState.currentStep < challenge.steps.length - 1) {
+                appState.currentStep++;
+                loadStepContent(challenge.steps[appState.currentStep]);
+            } else {
+                // Complete the challenge
+                completeChallenge();
+            }
+        }
+
+        // Complete the current challenge
+        function completeChallenge() {
+            const challengeId = appState.currentChallenge;
+            const challenge = challengeData[challengeId];
+            
+            // Update challenge progress
+            appState.challenges[challengeId].progress = 100;
+            
+            // Award points
+            appState.userPoints += challenge.points;
+            localStorage.setItem('userPoints', appState.userPoints);
+            updatePointsDisplay();
+            
+            // Update challenge card
+            updateChallengeProgress(challengeId);
+            
+            showToast(`Challenge completed! You earned ${challenge.points} points.`);
+            closeStepChallengeModal();
+        }
+
+        // Update challenge progress display
+        function updateChallengeProgress(challengeId) {
+            const challenge = appState.challenges[challengeId];
+            const card = document.querySelector(`.start-challenge[data-challenge="${challengeId}"]`).closest('.challenge-card');
+            
+            if (card) {
+                const progressBar = card.querySelector('.progress-fill');
+                const progressText = card.querySelector('.progress-text');
+                const button = card.querySelector('.start-challenge');
+                
+                if (progressBar) {
+                    progressBar.style.width = challenge.progress + '%';
+                }
+                
+                if (progressText) {
+                    if (challenge.started) {
+                        progressText.innerHTML = `<span>${challenge.progress}% complete</span><span>In progress</span>`;
+                    } else {
+                        progressText.innerHTML = `<span>Not started</span><span>Available now</span>`;
+                    }
+                }
+                
+                if (button) {
+                    if (challenge.started) {
+                        button.textContent = 'Continue Challenge';
+                        button.classList.remove('outline');
+                        button.classList.add('primary');
+                    } else {
+                        button.textContent = 'Start Challenge';
+                        button.classList.remove('primary');
+                        button.classList.add('outline');
+                    }
+                }
+            }
+        }
+
+        // Close step challenge modal
+        function closeStepChallengeModal() {
+            document.getElementById('stepChallengeModal').style.display = 'none';
+        }
+
+        // Update points display
+        function updatePointsDisplay() {
+            document.getElementById('totalPoints').textContent = appState.userPoints + ' Points';
+        }
+
+        // Show toast notification
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            const toastMessage = document.getElementById('toastMessage');
+            
+            toastMessage.textContent = message;
+            toast.classList.add('show');
+            
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+    </script>
+</body>
+</html>
