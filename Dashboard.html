@@ -962,6 +962,159 @@
             }
         };
 
+        // Enhanced chatbot functionality
+        class FinancialChatbot {
+            constructor() {
+                this.conversationHistory = [];
+                this.userContext = {
+                    currentGoal: 'savings',
+                    lastTopic: 'budget',
+                    mood: 'neutral'
+                };
+            }
+
+            // Enhanced response generation with context awareness
+            generateResponse(userMessage) {
+                const lowerMessage = userMessage.toLowerCase();
+                this.conversationHistory.push({ role: 'user', message: userMessage });
+                
+                // Update user context based on message
+                this.updateContext(lowerMessage);
+                
+                // Generate response based on context and message content
+                let response = this.analyzeMessage(lowerMessage);
+                
+                // Add to conversation history
+                this.conversationHistory.push({ role: 'bot', message: response });
+                
+                return response;
+            }
+
+            updateContext(message) {
+                // Update context based on keywords in the message
+                if (message.includes('budget') || message.includes('expense') || message.includes('spending')) {
+                    this.userContext.lastTopic = 'budget';
+                } else if (message.includes('save') || message.includes('saving') || message.includes('emergency fund')) {
+                    this.userContext.lastTopic = 'savings';
+                    this.userContext.currentGoal = 'savings';
+                } else if (message.includes('debt') || message.includes('loan') || message.includes('credit')) {
+                    this.userContext.lastTopic = 'debt';
+                } else if (message.includes('invest') || message.includes('stock') || message.includes('growth')) {
+                    this.userContext.lastTopic = 'investment';
+                } else if (message.includes('goal') || message.includes('target') || message.includes('plan')) {
+                    this.userContext.lastTopic = 'goals';
+                }
+
+                // Detect mood
+                if (message.includes('worried') || message.includes('stress') || message.includes('anxious')) {
+                    this.userContext.mood = 'concerned';
+                } else if (message.includes('excited') || message.includes('happy') || message.includes('great')) {
+                    this.userContext.mood = 'positive';
+                }
+            }
+
+            analyzeMessage(message) {
+                // Context-aware responses
+                if (message.includes('hello') || message.includes('hi') || message.includes('hey')) {
+                    return this.getGreeting();
+                } else if (message.includes('budget') || message.includes('expense')) {
+                    return this.getBudgetAdvice();
+                } else if (message.includes('save') || message.includes('saving')) {
+                    return this.getSavingsAdvice();
+                } else if (message.includes('debt') || message.includes('loan')) {
+                    return this.getDebtAdvice();
+                } else if (message.includes('invest') || message.includes('stock')) {
+                    return this.getInvestmentAdvice();
+                } else if (message.includes('goal') || message.includes('target')) {
+                    return this.getGoalAdvice();
+                } else if (message.includes('challenge') || message.includes('progress')) {
+                    return this.getChallengeUpdate();
+                } else if (message.includes('thank') || message.includes('thanks')) {
+                    return this.getThankYouResponse();
+                } else if (message.includes('help')) {
+                    return this.getHelpResponse();
+                } else {
+                    return this.getFallbackResponse();
+                }
+            }
+
+            getGreeting() {
+                const greetings = [
+                    `Hello ${userData.fullName.split(' ')[0]}! How can I assist with your financial goals today?`,
+                    `Hi there! I'm excited to help you with your financial journey. What's on your mind?`,
+                    `Welcome back ${userData.fullName.split(' ')[0]}! Ready to make some financial progress?`
+                ];
+                return greetings[Math.floor(Math.random() * greetings.length)];
+            }
+
+            getBudgetAdvice() {
+                const budgetTips = [
+                    `Based on your income (R${userData.financialData.income}) and expenses (R${userData.financialData.expenses}), you're saving about ${Math.round(((userData.financialData.income - userData.financialData.expenses) / userData.financialData.income) * 100)}% of your income. That's a good start!`,
+                    `I notice you're spending R${userData.financialData.expenses} monthly. Have you considered tracking your daily expenses to identify areas where you could save more?`,
+                    `Your current savings rate is solid. To optimize further, try the 50/30/20 rule: 50% needs, 30% wants, 20% savings. Would you like me to create a personalized budget plan?`
+                ];
+                return budgetTips[Math.floor(Math.random() * budgetTips.length)];
+            }
+
+            getSavingsAdvice() {
+                const savingsGoal = userData.goals.find(goal => goal.title.includes("Save for House Deposit"));
+                const progress = savingsGoal ? Math.round((savingsGoal.current / savingsGoal.target) * 100) : 0;
+                
+                const savingsTips = [
+                    `You're ${progress}% towards your house deposit goal! At your current rate, you'll reach it in about ${Math.ceil((savingsGoal.target - savingsGoal.current) / 500)} months.`,
+                    `Great job on your savings progress! Consider setting up automatic transfers to make saving even easier.`,
+                    `Your emergency fund is growing well. Remember to keep 3-6 months of expenses saved for unexpected situations.`
+                ];
+                return savingsTips[Math.floor(Math.random() * savingsTips.length)];
+            }
+
+            getDebtAdvice() {
+                const debtTips = [
+                    `Your current debt is R${userData.financialData.debt}. With focused effort, you could pay this off in ${Math.ceil(userData.financialData.debt / 1000)} months.`,
+                    `Consider the snowball method: pay minimums on all debts, then put extra money toward your smallest debt first. This builds momentum!`,
+                    `Your debt-to-income ratio is ${Math.round((userData.financialData.debt / userData.financialData.income) * 100)}%, which is manageable. Let's work on reducing it further.`
+                ];
+                return debtTips[Math.floor(Math.random() * debtTips.length)];
+            }
+
+            getInvestmentAdvice() {
+                return "Once you've built your emergency fund (3-6 months of expenses), we can explore low-risk investment options like index funds or ETFs. For now, focus on completing your current savings challenge!";
+            }
+
+            getGoalAdvice() {
+                return "Your financial goals are well-defined! Remember to make them SMART: Specific, Measurable, Achievable, Relevant, and Time-bound. Would you like to review any of your goals?";
+            }
+
+            getChallengeUpdate() {
+                return `Your current challenge is "${userData.currentChallenge.title}". You're ${userData.currentChallenge.progress}% complete! Keep up the great work. Every small step builds financial confidence.`;
+            }
+
+            getThankYouResponse() {
+                const responses = [
+                    "You're welcome! Remember, I'm here whenever you need financial guidance.",
+                    "Happy to help! Your financial progress is inspiring.",
+                    "My pleasure! Keep up the great work on your financial journey!"
+                ];
+                return responses[Math.floor(Math.random() * responses.length)];
+            }
+
+            getHelpResponse() {
+                return "I can help you with: budgeting advice, savings strategies, debt management, investment basics, goal setting, and challenge progress. What would you like to discuss?";
+            }
+
+            getFallbackResponse() {
+                const fallbacks = [
+                    "I'm here to help with your financial questions! You can ask me about budgeting, saving, debt management, or your current challenges.",
+                    "That's an interesting question! As your financial coach, I specialize in budgeting, savings strategies, debt reduction, and investment basics. How can I assist you?",
+                    "I'd love to help with that! Could you tell me more about what financial topic you'd like to discuss?"
+                ];
+                return fallbacks[Math.floor(Math.random() * fallbacks.length)];
+            }
+        }
+
+        // Initialize the enhanced chatbot
+        const chatbot = new FinancialChatbot();
+
         // Function to get initials from full name
         function getInitials(name) {
             return name.split(' ').map(n => n[0]).join('').toUpperCase();
@@ -1083,7 +1236,6 @@
             const chatSend = document.getElementById('chatSend');
             const askZariBtn = document.getElementById('askZariBtn');
             const continueChallengeBtn = document.getElementById('continueChallengeBtn');
-            const profileLink = document.getElementById('profileLink');
 
             // Toggle chat visibility
             chatToggle.addEventListener('click', function() {
@@ -1123,7 +1275,6 @@
                 }
             });
 
-
             // Send message function
             function sendMessage() {
                 const message = chatInput.value.trim();
@@ -1133,11 +1284,29 @@
                 addMessage(message, 'user');
                 chatInput.value = '';
 
-                // Simulate bot response after a short delay
+                // Simulate typing indicator
+                const typingIndicator = addTypingIndicator();
+                
+                // Generate bot response after a short delay
                 setTimeout(() => {
-                    const botResponse = generateBotResponse(message);
+                    // Remove typing indicator
+                    if (typingIndicator && typingIndicator.parentNode) {
+                        typingIndicator.parentNode.removeChild(typingIndicator);
+                    }
+                    
+                    const botResponse = chatbot.generateResponse(message);
                     addMessage(botResponse, 'bot');
-                }, 1000);
+                }, 1500);
+            }
+
+            // Add typing indicator
+            function addTypingIndicator() {
+                const typingDiv = document.createElement('div');
+                typingDiv.classList.add('message', 'bot-message');
+                typingDiv.innerHTML = '<div class="typing-indicator"><span></span><span></span><span></span></div>';
+                chatMessages.appendChild(typingDiv);
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+                return typingDiv;
             }
 
             // Add message to chat
@@ -1148,31 +1317,6 @@
                 messageDiv.textContent = text;
                 chatMessages.appendChild(messageDiv);
                 chatMessages.scrollTop = chatMessages.scrollHeight;
-            }
-
-            // Generate bot responses
-            function generateBotResponse(userMessage) {
-                const lowerMessage = userMessage.toLowerCase();
-                
-                if (lowerMessage.includes('hello') || lowerMessage.includes('hi')) {
-                    return `Hello ${userData.fullName.split(' ')[0]}! How can I assist with your financial goals today?`;
-                } else if (lowerMessage.includes('budget') || lowerMessage.includes('expense')) {
-                    return `Based on your current income (R${userData.financialData.income}) and expenses (R${userData.financialData.expenses}), you could save an additional R${Math.round((userData.financialData.income - userData.financialData.expenses) * 0.1)} monthly by reducing dining out expenses. Would you like me to create a customized budget plan?`;
-                } else if (lowerMessage.includes('saving') || lowerMessage.includes('save')) {
-                    const savingsGoal = userData.goals.find(goal => goal.title.includes("Save for House Deposit"));
-                    const daysLeft = savingsGoal ? Math.ceil((savingsGoal.target - savingsGoal.current) / 500) : 30;
-                    return `You're doing great with your savings goal! At this rate, you'll reach your target in about ${daysLeft} days. Consider setting up automatic transfers to make saving easier.`;
-                } else if (lowerMessage.includes('debt') || lowerMessage.includes('loan')) {
-                    return `Your current debt is R${userData.financialData.debt}. With your current repayment rate, you'll be debt-free in about 4 months. Would you like strategies to pay it off faster?`;
-                } else if (lowerMessage.includes('investment') || lowerMessage.includes('invest')) {
-                    return "Once you've built your emergency fund, we can explore low-risk investment options. For now, focus on completing your current savings challenge!";
-                } else if (lowerMessage.includes('challenge') || lowerMessage.includes('goal')) {
-                    return `Your current challenge is to ${userData.currentChallenge.title.toLowerCase()}. You're ${userData.currentChallenge.progress}% complete! Keep up the great work. Would you like to set a new financial goal?`;
-                } else if (lowerMessage.includes('thank')) {
-                    return "You're welcome! Remember, I'm here whenever you need financial guidance. Keep up the great progress on your financial journey!";
-                } else {
-                    return "I'm here to help with your financial questions! You can ask me about budgeting, saving, debt management, or your current challenges.";
-                }
             }
 
             // Event listeners for sending messages
@@ -1200,7 +1344,4 @@
         });
     </script>
 </body>
-
 </html>
-
-
