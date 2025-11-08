@@ -4,16 +4,241 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Community - FinQuest</title>
-    <link rel="stylesheet" href="styles-main.css">
-    <link rel="stylesheet" href="styles-dashboard.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        /* Modern Community Styles */
-        .community-container {
-            padding: 1.5rem;
-            max-width: 1200px;
-            margin: 0 auto;
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
+        :root {
+            --primary: #4361ee;
+            --secondary: #3f37c9;
+            --success: #4cc9f0;
+            --danger: #f72585;
+            --warning: #f8961e;
+            --info: #4895ef;
+            --light: #f8f9fa;
+            --dark: #212529;
+            --background: #f5f7fb;
+            --card: #ffffff;
+            --text: #333333;
+            --text-light: #6c757d;
+            --border: #dee2e6;
+            --shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            --radius: 12px;
+        }
+
+        body {
+            background-color: var(--background);
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        .app-container {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Sidebar Styles */
+        .sidebar {
+            width: 260px;
+            background: linear-gradient(180deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 1.5rem 1rem;
+            display: flex;
+            flex-direction: column;
+            box-shadow: var(--shadow);
+            z-index: 100;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 2rem;
+            padding: 0 0.5rem;
+        }
+
+        .logo-icon {
+            font-size: 2rem;
+        }
+
+        .logo-text {
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 1rem 0.5rem;
+            margin-bottom: 1.5rem;
+            border-radius: var(--radius);
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1.2rem;
+        }
+
+        .user-info {
+            flex: 1;
+        }
+
+        .user-name {
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+
+        .user-level {
+            font-size: 0.8rem;
+            opacity: 0.9;
+        }
+
+        .sidebar-nav {
+            list-style: none;
+            flex: 1;
+        }
+
+        .sidebar-nav li {
+            margin-bottom: 0.5rem;
+        }
+
+        .sidebar-nav a {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem 0.5rem;
+            color: white;
+            text-decoration: none;
+            border-radius: var(--radius);
+            transition: all 0.3s ease;
+        }
+
+        .sidebar-nav a:hover, .sidebar-nav a.active {
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .nav-icon {
+            font-size: 1.25rem;
+            width: 24px;
+            text-align: center;
+        }
+
+        .sidebar-footer {
+            margin-top: auto;
+        }
+
+        .logout-btn {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem 0.5rem;
+            color: white;
+            text-decoration: none;
+            border-radius: var(--radius);
+            transition: all 0.3s ease;
+        }
+
+        .logout-btn:hover {
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        /* Main Content Styles */
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: auto;
+        }
+
+        .main-header {
+            background: var(--card);
+            padding: 1.5rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .header-left h1 {
+            font-size: 1.75rem;
+            margin-bottom: 0.25rem;
+            color: var(--primary);
+        }
+
+        .header-left p {
+            color: var(--text-light);
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .points-display {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 100%);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            color: white;
+            font-weight: 600;
+        }
+
+        .points-icon {
+            font-size: 1.25rem;
+        }
+
+        .notification-icon {
+            position: relative;
+            font-size: 1.5rem;
+            color: var(--text-light);
+            cursor: pointer;
+        }
+
+        .notification-badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background: var(--danger);
+            color: white;
+            border-radius: 50%;
+            width: 18px;
+            height: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.7rem;
+            font-weight: 600;
+        }
+
+        /* Community Container */
+        .community-container {
+            padding: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        /* Community Stats */
         .community-stats {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -23,15 +248,16 @@
 
         .stat-card {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            border-radius: 16px;
+            border-radius: var(--radius);
             padding: 1.5rem;
             color: white;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            box-shadow: var(--shadow);
             transition: transform 0.3s ease, box-shadow 0.3s ease;
             display: flex;
             flex-direction: column;
             align-items: center;
             text-align: center;
+            cursor: pointer;
         }
 
         .stat-card:hover {
@@ -67,7 +293,142 @@
             opacity: 0.9;
         }
 
-        .leaderboard-section, .squads-section, .community-challenges, .discussion-section {
+        /* Community Tabs */
+        .community-tabs {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 2rem;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 0.5rem;
+        }
+
+        .tab {
+            padding: 0.75rem 1.5rem;
+            background: transparent;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            color: var(--text-light);
+            transition: all 0.3s ease;
+        }
+
+        .tab.active {
+            background: var(--primary);
+            color: white;
+        }
+
+        .tab:hover:not(.active) {
+            background: var(--light);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* Create Post Form */
+        .create-post-form {
+            background: var(--card);
+            border-radius: var(--radius);
+            padding: 1.5rem;
+            box-shadow: var(--shadow);
+            margin-bottom: 2rem;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: var(--text);
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        textarea.form-control {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        .form-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 1rem;
+        }
+
+        /* Buttons */
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: none;
+            font-size: 0.9rem;
+        }
+
+        .btn.primary {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn.primary:hover {
+            background: var(--secondary);
+        }
+
+        .btn.secondary {
+            background: var(--light);
+            color: var(--text);
+        }
+
+        .btn.secondary:hover {
+            background: var(--border);
+        }
+
+        .btn.outline {
+            background: transparent;
+            border: 1px solid var(--border);
+            color: var(--text);
+        }
+
+        .btn.outline:hover {
+            background: var(--light);
+        }
+
+        .btn.full-width {
+            width: 100%;
+        }
+
+        .btn.danger {
+            background: var(--danger);
+            color: white;
+        }
+
+        .btn.danger:hover {
+            opacity: 0.9;
+        }
+
+        /* Posts Section */
+        .posts-section {
             margin-bottom: 3rem;
         }
 
@@ -80,95 +441,46 @@
 
         .section-header h2 {
             font-size: 1.75rem;
-            color: #2d3748;
+            color: var(--text);
             margin: 0;
         }
 
-        .leaderboard-card, .squad-card, .community-challenge-card, .discussion-item {
-            background: white;
-            border-radius: 16px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+        .posts-container {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .post-card {
+            background: var(--card);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
             overflow: hidden;
             transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
 
-        .leaderboard-card:hover, .squad-card:hover, .community-challenge-card:hover, .discussion-item:hover {
+        .post-card:hover {
             transform: translateY(-3px);
             box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
         }
 
-        .leaderboard-header {
-            display: grid;
-            grid-template-columns: 1fr auto auto;
-            padding: 1rem 1.5rem;
-            background-color: #f7fafc;
-            border-bottom: 1px solid #e2e8f0;
-            font-weight: 600;
-            color: #4a5568;
-        }
-
-        .leaderboard-list {
-            padding: 0;
-        }
-
-        .leaderboard-item {
-            display: grid;
-            grid-template-columns: auto 1fr auto auto;
+        .post-header {
+            display: flex;
+            justify-content: space-between;
             align-items: center;
-            padding: 1rem 1.5rem;
-            border-bottom: 1px solid #f1f5f9;
-            gap: 1rem;
+            padding: 1.25rem 1.5rem;
+            border-bottom: 1px solid var(--border);
         }
 
-        .leaderboard-item:last-child {
-            border-bottom: none;
-        }
-
-        .leaderboard-item.first {
-            background: linear-gradient(to right, rgba(255, 215, 0, 0.05), transparent);
-        }
-
-        .leaderboard-item.second {
-            background: linear-gradient(to right, rgba(192, 192, 192, 0.05), transparent);
-        }
-
-        .leaderboard-item.third {
-            background: linear-gradient(to right, rgba(205, 127, 50, 0.05), transparent);
-        }
-
-        .leaderboard-item.current-user {
-            background: linear-gradient(to right, rgba(66, 153, 225, 0.08), transparent);
-            border-left: 4px solid #4299e1;
-        }
-
-        .rank {
-            font-weight: 700;
-            width: 2rem;
-            text-align: center;
-            color: #4a5568;
-        }
-
-        .first .rank {
-            color: #d69e2e;
-        }
-
-        .second .rank {
-            color: #a0aec0;
-        }
-
-        .third .rank {
-            color: #ed8936;
-        }
-
-        .player-info {
+        .post-author {
             display: flex;
             align-items: center;
             gap: 0.75rem;
         }
 
-        .player-avatar {
-            width: 2.5rem;
-            height: 2.5rem;
+        .author-avatar {
+            width: 40px;
+            height: 40px;
             border-radius: 50%;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             display: flex;
@@ -179,32 +491,109 @@
             font-size: 0.9rem;
         }
 
-        .player-details .player-name {
+        .author-info .author-name {
             font-weight: 600;
-            color: #2d3748;
+            color: var(--text);
         }
 
-        .player-details .player-title {
+        .author-info .post-time {
             font-size: 0.8rem;
-            color: #718096;
+            color: var(--text-light);
         }
 
-        .player-level, .player-points {
-            font-weight: 600;
-            color: #4a5568;
+        .post-actions {
+            display: flex;
+            gap: 0.5rem;
         }
 
-        .squads-grid, .challenges-grid {
+        .action-btn {
+            background: none;
+            border: none;
+            color: var(--text-light);
+            cursor: pointer;
+            font-size: 1rem;
+            transition: color 0.3s ease;
+        }
+
+        .action-btn:hover {
+            color: var(--primary);
+        }
+
+        .post-content {
+            padding: 1.5rem;
+        }
+
+        .post-title {
+            font-size: 1.25rem;
+            margin-bottom: 0.75rem;
+            color: var(--text);
+        }
+
+        .post-text {
+            color: var(--text);
+            line-height: 1.6;
+            margin-bottom: 1rem;
+        }
+
+        .post-stats {
+            display: flex;
+            gap: 1rem;
+            font-size: 0.9rem;
+            color: var(--text-light);
+        }
+
+        .post-footer {
+            padding: 1rem 1.5rem;
+            border-top: 1px solid var(--border);
+            display: flex;
+            gap: 1rem;
+        }
+
+        .reaction-btn {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: none;
+            border: none;
+            color: var(--text-light);
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: color 0.3s ease;
+        }
+
+        .reaction-btn:hover {
+            color: var(--primary);
+        }
+
+        .reaction-btn.active {
+            color: var(--primary);
+        }
+
+        /* Squads Section */
+        .squads-section {
+            margin-bottom: 3rem;
+        }
+
+        .squads-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
             gap: 1.5rem;
         }
 
-        .squad-card, .community-challenge-card {
+        .squad-card {
+            background: var(--card);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
             padding: 1.5rem;
             display: flex;
             flex-direction: column;
             height: 100%;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .squad-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
         }
 
         .squad-header {
@@ -216,17 +605,18 @@
         .squad-icon {
             font-size: 2.5rem;
             flex-shrink: 0;
+            color: var(--primary);
         }
 
         .squad-info h3 {
             margin: 0 0 0.5rem 0;
-            color: #2d3748;
+            color: var(--text);
             font-size: 1.25rem;
         }
 
         .squad-info p {
             margin: 0;
-            color: #718096;
+            color: var(--text-light);
             font-size: 0.9rem;
             line-height: 1.4;
         }
@@ -236,8 +626,8 @@
             justify-content: space-between;
             margin-bottom: 1.25rem;
             padding: 1rem 0;
-            border-top: 1px solid #f1f5f9;
-            border-bottom: 1px solid #f1f5f9;
+            border-top: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
         }
 
         .squad-stat {
@@ -248,12 +638,12 @@
             display: block;
             font-weight: 700;
             font-size: 1.25rem;
-            color: #2d3748;
+            color: var(--text);
         }
 
-        .stat-label {
+        .squad-stat .stat-label {
             font-size: 0.8rem;
-            color: #718096;
+            color: var(--text-light);
         }
 
         .squad-members {
@@ -268,232 +658,107 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            background: #e2e8f0;
-            color: #4a5568;
+            background: var(--light);
+            color: var(--text);
             font-size: 0.8rem;
             font-weight: 600;
             margin-right: -0.5rem;
-            border: 2px solid white;
+            border: 2px solid var(--card);
         }
 
         .member-more {
-            background: #4299e1;
+            background: var(--primary);
             color: white;
         }
 
-        .community-challenge-card {
-            position: relative;
-        }
-
-        .challenge-badge {
-            position: absolute;
-            top: 1rem;
-            right: 1rem;
-            background: #4299e1;
-            color: white;
-            padding: 0.25rem 0.75rem;
-            border-radius: 20px;
-            font-size: 0.75rem;
-            font-weight: 600;
-        }
-
-        .community-challenge-card h3 {
-            margin: 0 0 0.5rem 0;
-            color: #2d3748;
-            font-size: 1.25rem;
-        }
-
-        .community-challenge-card p {
-            margin: 0 0 1.25rem 0;
-            color: #718096;
-            font-size: 0.9rem;
-            line-height: 1.4;
-        }
-
-        .challenge-progress {
-            margin-bottom: 1.25rem;
-        }
-
-        .progress-bar {
-            height: 8px;
-            background: #e2e8f0;
-            border-radius: 4px;
-            overflow: hidden;
-            margin-bottom: 0.5rem;
-        }
-
-        .progress-fill {
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
             height: 100%;
-            background: linear-gradient(to right, #48bb78, #38a169);
-            border-radius: 4px;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
         }
 
-        .progress-stats {
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: var(--card);
+            border-radius: var(--radius);
+            width: 90%;
+            max-width: 500px;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .modal-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--border);
             display: flex;
             justify-content: space-between;
-            font-size: 0.8rem;
-            color: #718096;
+            align-items: center;
         }
 
-        .participants {
-            margin-bottom: 1.25rem;
-            font-size: 0.9rem;
-            color: #4a5568;
+        .modal-header h3 {
+            margin: 0;
+            color: var(--text);
         }
 
-        .discussion-list {
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
+        .close-modal {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--text-light);
         }
 
-        .discussion-item {
-            display: flex;
-            gap: 1rem;
+        .modal-body {
             padding: 1.5rem;
         }
 
-        .discussion-avatar {
-            width: 3rem;
-            height: 3rem;
-            border-radius: 50%;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        .modal-footer {
+            padding: 1rem 1.5rem;
+            border-top: 1px solid var(--border);
             display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-weight: 600;
-            font-size: 1rem;
-            flex-shrink: 0;
-        }
-
-        .discussion-content {
-            flex: 1;
-        }
-
-        .discussion-header {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 0.5rem;
-        }
-
-        .author {
-            font-weight: 600;
-            color: #2d3748;
-        }
-
-        .time {
-            font-size: 0.8rem;
-            color: #a0aec0;
-        }
-
-        .discussion-content h4 {
-            margin: 0 0 0.5rem 0;
-            color: #2d3748;
-            font-size: 1.1rem;
-        }
-
-        .discussion-content p {
-            margin: 0 0 1rem 0;
-            color: #718096;
-            font-size: 0.9rem;
-            line-height: 1.4;
-        }
-
-        .discussion-stats {
-            display: flex;
+            justify-content: flex-end;
             gap: 1rem;
-            font-size: 0.8rem;
-            color: #718096;
         }
 
-        .btn {
-            padding: 0.75rem 1.5rem;
-            border-radius: 8px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            border: none;
-            font-size: 0.9rem;
-        }
-
-        .btn.primary {
-            background: #4299e1;
-            color: white;
-        }
-
-        .btn.primary:hover {
-            background: #3182ce;
-        }
-
-        .btn.secondary {
-            background: #e2e8f0;
-            color: #4a5568;
-        }
-
-        .btn.secondary:hover {
-            background: #cbd5e0;
-        }
-
-        .btn.outline {
-            background: transparent;
-            border: 1px solid #cbd5e0;
-            color: #4a5568;
-        }
-
-        .btn.outline:hover {
-            background: #f7fafc;
-        }
-
-        .btn.full-width {
-            width: 100%;
-        }
-
-        /* Responsive adjustments */
+        /* Responsive Adjustments */
         @media (max-width: 768px) {
+            .app-container {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                width: 100%;
+                padding: 1rem;
+            }
+
             .community-stats {
                 grid-template-columns: repeat(2, 1fr);
             }
-            
-            .squads-grid, .challenges-grid {
+
+            .squads-grid {
                 grid-template-columns: 1fr;
             }
-            
-            .leaderboard-header {
-                display: none;
-            }
-            
-            .leaderboard-item {
-                grid-template-columns: auto 1fr;
-                grid-template-areas: 
-                    "rank player"
-                    "level points";
-                gap: 0.5rem;
-                padding: 1rem;
-            }
-            
-            .rank {
-                grid-area: rank;
-            }
-            
-            .player-info {
-                grid-area: player;
-            }
-            
-            .player-level {
-                grid-area: level;
-                justify-self: start;
-            }
-            
-            .player-points {
-                grid-area: points;
-                justify-self: end;
-            }
-            
+
             .section-header {
                 flex-direction: column;
                 align-items: flex-start;
                 gap: 1rem;
+            }
+
+            .community-tabs {
+                flex-wrap: wrap;
             }
         }
     </style>
@@ -519,11 +784,11 @@
                 </div>
 
                 <ul class="sidebar-nav">
-                    <li><a href="Dashboard.html"><span class="nav-icon">📊</span> Dashboard</a></li>
-                    <li><a href="challenges.html"><span class="nav-icon">🎯</span> Challenges</a></li>
-                    <li><a href="learn.html"><span class="nav-icon">📚</span> Learn</a></li>
-                    <li><a href="community.html" class="active"><span class="nav-icon">👥</span> Community</a></li>
-                    <li><a href="profile.html"><span class="nav-icon">👤</span> Profile</a></li>
+                    <li><a href="#"><span class="nav-icon">📊</span> Dashboard</a></li>
+                    <li><a href="#"><span class="nav-icon">🎯</span> Challenges</a></li>
+                    <li><a href="#"><span class="nav-icon">📚</span> Learn</a></li>
+                    <li><a href="#" class="active"><span class="nav-icon">👥</span> Community</a></li>
+                    <li><a href="#"><span class="nav-icon">👤</span> Profile</a></li>
                 </ul>
 
                 <div class="sidebar-footer">
@@ -546,319 +811,636 @@
                         <span class="points-icon">⭐</span>
                         <span class="points-value">980 Points</span>
                     </div>
+                    <div class="notification-icon">
+                        <span class="nav-icon">🔔</span>
+                        <span class="notification-badge">3</span>
+                    </div>
                 </div>
             </header>
 
             <div class="community-container">
                 <!-- Community Stats -->
                 <div class="community-stats">
-                    <div class="stat-card">
+                    <div class="stat-card" id="total-players">
                         <div class="stat-icon">👥</div>
                         <div class="stat-number">12,458</div>
                         <div class="stat-label">Total Players</div>
                     </div>
-                    <div class="stat-card">
+                    <div class="stat-card" id="active-squads">
                         <div class="stat-icon">🏆</div>
                         <div class="stat-number">342</div>
                         <div class="stat-label">Active Squads</div>
                     </div>
-                    <div class="stat-card">
+                    <div class="stat-card" id="challenges-today">
                         <div class="stat-icon">🔥</div>
                         <div class="stat-number">2,874</div>
                         <div class="stat-label">Challenges Today</div>
                     </div>
-                    <div class="stat-card">
+                    <div class="stat-card" id="community-savings">
                         <div class="stat-icon">💰</div>
                         <div class="stat-number">R4.2M</div>
                         <div class="stat-label">Community Savings</div>
                     </div>
                 </div>
 
-                <!-- Leaderboard -->
-                <section class="leaderboard-section">
-                    <h2>Top Players</h2>
-                    <div class="leaderboard-card">
-                        <div class="leaderboard-header">
-                            <span>Player</span>
-                            <span>Level</span>
-                            <span>Points</span>
+                <!-- Community Tabs -->
+                <div class="community-tabs">
+                    <button class="tab active" data-tab="overview">Overview</button>
+                    <button class="tab" data-tab="posts">Posts</button>
+                    <button class="tab" data-tab="squads">Squads</button>
+                    <button class="tab" data-tab="challenges">Challenges</button>
+                </div>
+
+                <!-- Overview Tab -->
+                <div class="tab-content active" id="overview">
+                    <!-- Create Post Form -->
+                    <div class="create-post-form">
+                        <div class="form-group">
+                            <label for="post-title">Create a Post</label>
+                            <input type="text" id="post-title" class="form-control" placeholder="What's on your mind?">
                         </div>
-                        <div class="leaderboard-list">
-                            <div class="leaderboard-item first">
-                                <div class="rank">1</div>
-                                <div class="player-info">
-                                    <div class="player-avatar">TS</div>
-                                    <div class="player-details">
-                                        <div class="player-name">Thabo S.</div>
-                                        <div class="player-title">Financial Guru</div>
-                                    </div>
-                                </div>
-                                <div class="player-level">Level 8</div>
-                                <div class="player-points">9,850</div>
-                            </div>
-
-                            <div class="leaderboard-item second">
-                                <div class="rank">2</div>
-                                <div class="player-info">
-                                    <div class="player-avatar">NM</div>
-                                    <div class="player-details">
-                                        <div class="player-name">Nomsa M.</div>
-                                        <div class="player-title">Savings Expert</div>
-                                    </div>
-                                </div>
-                                <div class="player-level">Level 7</div>
-                                <div class="player-points">8,920</div>
-                            </div>
-
-                            <div class="leaderboard-item third">
-                                <div class="rank">3</div>
-                                <div class="player-info">
-                                    <div class="player-avatar">LK</div>
-                                    <div class="player-details">
-                                        <div class="player-name">Lerato K.</div>
-                                        <div class="player-title">Investment Whiz</div>
-                                    </div>
-                                </div>
-                                <div class="player-level">Level 7</div>
-                                <div class="player-points">8,450</div>
-                            </div>
-
-                            <div class="leaderboard-item">
-                                <div class="rank">4</div>
-                                <div class="player-info">
-                                    <div class="player-avatar">PM</div>
-                                    <div class="player-details">
-                                        <div class="player-name">Peter M.</div>
-                                        <div class="player-title">Budget Master</div>
-                                    </div>
-                                </div>
-                                <div class="player-level">Level 6</div>
-                                <div class="player-points">7,980</div>
-                            </div>
-
-                            <div class="leaderboard-item current-user">
-                                <div class="rank">27</div>
-                                <div class="player-info">
-                                    <div class="player-avatar">TJ</div>
-                                    <div class="player-details">
-                                        <div class="player-name">Thabo J.</div>
-                                        <div class="player-title">Financial Builder</div>
-                                    </div>
-                                </div>
-                                <div class="player-level">Level 2</div>
-                                <div class="player-points">980</div>
-                            </div>
+                        <div class="form-group">
+                            <textarea id="post-content" class="form-control" placeholder="Share your financial journey, ask a question, or start a discussion..."></textarea>
+                        </div>
+                        <div class="form-actions">
+                            <button class="btn outline">Cancel</button>
+                            <button class="btn primary" id="submit-post">Post</button>
                         </div>
                     </div>
-                </section>
 
-                <!-- Squads -->
-                <section class="squads-section">
-                    <div class="section-header">
-                        <h2>Featured Squads</h2>
-                        <button class="btn secondary">Create Squad</button>
-                    </div>
-                    
-                    <div class="squads-grid">
-                        <div class="squad-card">
-                            <div class="squad-header">
-                                <div class="squad-icon">💰</div>
-                                <div class="squad-info">
-                                    <h3>Savings Squad</h3>
-                                    <p>We're challenging each other to save 20% of our income this month!</p>
-                                </div>
-                            </div>
-                            <div class="squad-stats">
-                                <div class="squad-stat">
-                                    <span class="stat-value">8</span>
-                                    <span class="stat-label">Members</span>
-                                </div>
-                                <div class="squad-stat">
-                                    <span class="stat-value">15</span>
-                                    <span class="stat-label">Challenges</span>
-                                </div>
-                                <div class="squad-stat">
-                                    <span class="stat-value">85%</span>
-                                    <span class="stat-label">Active</span>
-                                </div>
-                            </div>
-                            <div class="squad-members">
-                                <div class="member-avatar">JD</div>
-                                <div class="member-avatar">TS</div>
-                                <div class="member-avatar">NM</div>
-                                <div class="member-more">+5</div>
-                            </div>
-                            <button class="btn primary full-width">Join Squad</button>
+                    <!-- Recent Posts -->
+                    <section class="posts-section">
+                        <h2>Recent Posts</h2>
+                        <div class="posts-container" id="recent-posts-container">
+                            <!-- Posts will be dynamically added here -->
                         </div>
+                    </section>
 
-                        <div class="squad-card">
-                            <div class="squad-header">
-                                <div class="squad-icon">📈</div>
-                                <div class="squad-info">
-                                    <h3>Investment Club</h3>
-                                    <p>Learning about stocks, bonds, and building wealth together</p>
-                                </div>
-                            </div>
-                            <div class="squad-stats">
-                                <div class="squad-stat">
-                                    <span class="stat-value">12</span>
-                                    <span class="stat-label">Members</span>
-                                </div>
-                                <div class="squad-stat">
-                                    <span class="stat-value">22</span>
-                                    <span class="stat-label">Challenges</span>
-                                </div>
-                                <div class="squad-stat">
-                                    <span class="stat-value">92%</span>
-                                    <span class="stat-label">Active</span>
-                                </div>
-                            </div>
-                            <div class="squad-members">
-                                <div class="member-avatar">LK</div>
-                                <div class="member-avatar">PM</div>
-                                <div class="member-avatar">AZ</div>
-                                <div class="member-more">+9</div>
-                            </div>
-                            <button class="btn primary full-width">Join Squad</button>
+                    <!-- Featured Squads -->
+                    <section class="squads-section">
+                        <div class="section-header">
+                            <h2>Featured Squads</h2>
+                            <button class="btn secondary" id="create-squad-btn">Create Squad</button>
                         </div>
-
-                        <div class="squad-card">
-                            <div class="squad-header">
-                                <div class="squad-icon">🎯</div>
-                                <div class="squad-info">
-                                    <h3>Debt Free Crew</h3>
-                                    <p>Supporting each other in becoming debt-free and financially independent</p>
-                                </div>
-                            </div>
-                            <div class="squad-stats">
-                                <div class="squad-stat">
-                                    <span class="stat-value">15</span>
-                                    <span class="stat-label">Members</span>
-                                </div>
-                                <div class="squad-stat">
-                                    <span class="stat-value">18</span>
-                                    <span class="stat-label">Challenges</span>
-                                </div>
-                                <div class="squad-stat">
-                                    <span class="stat-value">78%</span>
-                                    <span class="stat-label">Active</span>
-                                </div>
-                            </div>
-                            <div class="squad-members">
-                                <div class="member-avatar">SM</div>
-                                <div class="member-avatar">RJ</div>
-                                <div class="member-avatar">KP</div>
-                                <div class="member-more">+12</div>
-                            </div>
-                            <button class="btn primary full-width">Join Squad</button>
+                        
+                        <div class="squads-grid" id="featured-squads-container">
+                            <!-- Squads will be dynamically added here -->
                         </div>
-                    </div>
-                </section>
+                    </section>
+                </div>
 
-                <!-- Community Challenges -->
-                <section class="community-challenges">
-                    <h2>Community Challenges</h2>
-                    <div class="challenges-grid">
-                        <div class="community-challenge-card">
-                            <div class="challenge-badge community">Community</div>
-                            <h3>Save R1 Million Challenge</h3>
-                            <p>Community goal to collectively save R1 million</p>
-                            <div class="challenge-progress">
-                                <div class="progress-bar">
-                                    <div class="progress-fill" style="width: 42%"></div>
-                                </div>
-                                <div class="progress-stats">
-                                    <span>R420,000 saved</span>
-                                    <span>42% Complete</span>
-                                </div>
-                            </div>
-                            <div class="participants">
-                                <span>2,458 participants</span>
-                            </div>
-                            <button class="btn primary full-width">Join Challenge</button>
+                <!-- Posts Tab -->
+                <div class="tab-content" id="posts">
+                    <section class="posts-section">
+                        <div class="section-header">
+                            <h2>All Posts</h2>
+                            <button class="btn primary" id="create-post-btn">Create Post</button>
                         </div>
-
-                        <div class="community-challenge-card">
-                            <div class="challenge-badge community">Community</div>
-                            <h3>Financial Literacy Month</h3>
-                            <p>Complete 5 financial literacy challenges this month</p>
-                            <div class="challenge-progress">
-                                <div class="progress-bar">
-                                    <div class="progress-fill" style="width: 65%"></div>
-                                </div>
-                                <div class="progress-stats">
-                                    <span>3,245 participants</span>
-                                    <span>65% Complete</span>
-                                </div>
-                            </div>
-                            <div class="participants">
-                                <span>5,000 goal</span>
-                            </div>
-                            <button class="btn primary full-width">Join Challenge</button>
+                        <div class="posts-container" id="all-posts-container">
+                            <!-- All posts will be dynamically added here -->
                         </div>
-                    </div>
-                </section>
+                    </section>
+                </div>
 
-                <!-- Discussion Forum -->
-                <section class="discussion-section">
-                    <h2>Recent Discussions</h2>
-                    <div class="discussion-list">
-                        <div class="discussion-item">
-                            <div class="discussion-avatar">NM</div>
-                            <div class="discussion-content">
-                                <div class="discussion-header">
-                                    <span class="author">Nomsa M.</span>
-                                    <span class="time">2 hours ago</span>
+                <!-- Squads Tab -->
+                <div class="tab-content" id="squads">
+                    <section class="squads-section">
+                        <div class="section-header">
+                            <h2>All Squads</h2>
+                            <button class="btn primary" id="create-squad-btn-2">Create Squad</button>
+                        </div>
+                        <div class="squads-grid" id="all-squads-container">
+                            <!-- All squads will be dynamically added here -->
+                        </div>
+                    </section>
+                </div>
+
+                <!-- Challenges Tab -->
+                <div class="tab-content" id="challenges">
+                    <section class="squads-section">
+                        <h2>Community Challenges</h2>
+                        <div class="squads-grid">
+                            <div class="squad-card">
+                                <div class="squad-header">
+                                    <div class="squad-icon">💰</div>
+                                    <div class="squad-info">
+                                        <h3>Save R1 Million Challenge</h3>
+                                        <p>Community goal to collectively save R1 million</p>
+                                    </div>
                                 </div>
-                                <h4>Best way to save for a house deposit?</h4>
-                                <p>I'm 25 and want to buy my first home in 5 years. What's the most effective saving strategy?</p>
-                                <div class="discussion-stats">
-                                    <span>💬 24 comments</span>
-                                    <span>👍 42 likes</span>
+                                <div class="squad-stats">
+                                    <div class="squad-stat">
+                                        <span class="stat-value">42%</span>
+                                        <span class="stat-label">Progress</span>
+                                    </div>
+                                    <div class="squad-stat">
+                                        <span class="stat-value">2,458</span>
+                                        <span class="stat-label">Participants</span>
+                                    </div>
                                 </div>
+                                <button class="btn primary full-width">Join Challenge</button>
+                            </div>
+
+                            <div class="squad-card">
+                                <div class="squad-header">
+                                    <div class="squad-icon">📈</div>
+                                    <div class="squad-info">
+                                        <h3>Financial Literacy Month</h3>
+                                        <p>Complete 5 financial literacy challenges this month</p>
+                                    </div>
+                                </div>
+                                <div class="squad-stats">
+                                    <div class="squad-stat">
+                                        <span class="stat-value">65%</span>
+                                        <span class="stat-label">Progress</span>
+                                    </div>
+                                    <div class="squad-stat">
+                                        <span class="stat-value">3,245</span>
+                                        <span class="stat-label">Participants</span>
+                                    </div>
+                                </div>
+                                <button class="btn primary full-width">Join Challenge</button>
                             </div>
                         </div>
-
-                        <div class="discussion-item">
-                            <div class="discussion-avatar">TS</div>
-                            <div class="discussion-content">
-                                <div class="discussion-header">
-                                    <span class="author">Thabo S.</span>
-                                    <span class="time">5 hours ago</span>
-                                </div>
-                                <h4>Just paid off my student loan! 🎉</h4>
-                                <p>After 3 years of consistent payments, I'm finally student debt free! Sharing my strategy...</p>
-                                <div class="discussion-stats">
-                                    <span>💬 56 comments</span>
-                                    <span>👍 128 likes</span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="discussion-item">
-                            <div class="discussion-avatar">LK</div>
-                            <div class="discussion-content">
-                                <div class="discussion-header">
-                                    <span class="author">Lerato K.</span>
-                                    <span class="time">1 day ago</span>
-                                </div>
-                                <h4>Tax-free savings account vs. traditional savings?</h4>
-                                <p>Which is better for long-term growth? Looking for advice from experienced investors.</p>
-                                <div class="discussion-stats">
-                                    <span>💬 38 comments</span>
-                                    <span>👍 67 likes</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <button class="btn outline full-width">View All Discussions</button>
-                </section>
+                    </section>
+                </div>
             </div>
         </main>
     </div>
 
-    <script src="js-community.js"></script>
-    <script src="js-auth.js"></script>
-</body>
+    <!-- Create Squad Modal -->
+    <div class="modal" id="create-squad-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Create a New Squad</h3>
+                <button class="close-modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="squad-name">Squad Name</label>
+                    <input type="text" id="squad-name" class="form-control" placeholder="Enter squad name">
+                </div>
+                <div class="form-group">
+                    <label for="squad-description">Description</label>
+                    <textarea id="squad-description" class="form-control" placeholder="What is your squad about?"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="squad-category">Category</label>
+                    <select id="squad-category" class="form-control">
+                        <option value="savings">Savings</option>
+                        <option value="investing">Investing</option>
+                        <option value="budgeting">Budgeting</option>
+                        <option value="debt">Debt Management</option>
+                        <option value="general">General Finance</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="squad-privacy">Privacy</label>
+                    <select id="squad-privacy" class="form-control">
+                        <option value="public">Public - Anyone can join</option>
+                        <option value="private">Private - Invite only</option>
+                    </select>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn outline close-modal">Cancel</button>
+                <button class="btn primary" id="create-squad">Create Squad</button>
+            </div>
+        </div>
+    </div>
 
+    <script>
+        // Sample data for posts and squads
+        let posts = [
+            {
+                id: 1,
+                author: {
+                    name: "Nomsa M.",
+                    initials: "NM",
+                    avatarColor: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)"
+                },
+                title: "Best way to save for a house deposit?",
+                content: "I'm 25 and want to buy my first home in 5 years. What's the most effective saving strategy? I've been looking at different savings accounts and investment options, but I'm not sure which would be best for a medium-term goal like this.",
+                time: "2 hours ago",
+                likes: 42,
+                comments: 24,
+                liked: false
+            },
+            {
+                id: 2,
+                author: {
+                    name: "Thabo S.",
+                    initials: "TS",
+                    avatarColor: "linear-gradient(135deg, #f093fb 0%, #f5576c 100%)"
+                },
+                title: "Just paid off my student loan! 🎉",
+                content: "After 3 years of consistent payments, I'm finally student debt free! I started with R85,000 in debt and used the snowball method to pay it off. The key for me was setting up automatic payments and cutting back on non-essential expenses. So excited to redirect that money toward savings now!",
+                time: "5 hours ago",
+                likes: 128,
+                comments: 56,
+                liked: true
+            },
+            {
+                id: 3,
+                author: {
+                    name: "Lerato K.",
+                    initials: "LK",
+                    avatarColor: "linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)"
+                },
+                title: "Tax-free savings account vs. traditional savings?",
+                content: "Which is better for long-term growth? Looking for advice from experienced investors. I'm trying to decide where to put my emergency fund and any extra savings. The tax benefits of TFSA seem appealing, but I'm not sure about the limitations.",
+                time: "1 day ago",
+                likes: 67,
+                comments: 38,
+                liked: false
+            }
+        ];
+
+        let squads = [
+            {
+                id: 1,
+                name: "Savings Squad",
+                description: "We're challenging each other to save 20% of our income this month!",
+                icon: "💰",
+                members: 8,
+                challenges: 15,
+                activity: 85,
+                category: "savings",
+                membersList: ["JD", "TS", "NM", "PM", "LK", "AZ", "RJ", "KP"]
+            },
+            {
+                id: 2,
+                name: "Investment Club",
+                description: "Learning about stocks, bonds, and building wealth together",
+                icon: "📈",
+                members: 12,
+                challenges: 22,
+                activity: 92,
+                category: "investing",
+                membersList: ["LK", "PM", "AZ", "NM", "TS", "JD", "SM", "RJ", "KP", "AB", "CD", "EF"]
+            },
+            {
+                id: 3,
+                name: "Debt Free Crew",
+                description: "Supporting each other in becoming debt-free and financially independent",
+                icon: "🎯",
+                members: 15,
+                challenges: 18,
+                activity: 78,
+                category: "debt",
+                membersList: ["SM", "RJ", "KP", "NM", "TS", "PM", "AZ", "JD", "LK", "AB", "CD", "EF", "GH", "IJ", "KL"]
+            }
+        ];
+
+        // DOM Elements
+        const tabs = document.querySelectorAll('.tab');
+        const tabContents = document.querySelectorAll('.tab-content');
+        const createSquadModal = document.getElementById('create-squad-modal');
+        const closeModalButtons = document.querySelectorAll('.close-modal');
+        const createSquadBtn = document.getElementById('create-squad-btn');
+        const createSquadBtn2 = document.getElementById('create-squad-btn-2');
+        const createSquadForm = document.getElementById('create-squad');
+        const submitPostBtn = document.getElementById('submit-post');
+        const createPostBtn = document.getElementById('create-post-btn');
+        const recentPostsContainer = document.getElementById('recent-posts-container');
+        const allPostsContainer = document.getElementById('all-posts-container');
+        const featuredSquadsContainer = document.getElementById('featured-squads-container');
+        const allSquadsContainer = document.getElementById('all-squads-container');
+
+        // Initialize the page
+        document.addEventListener('DOMContentLoaded', function() {
+            // Load initial data
+            renderPosts(posts, recentPostsContainer);
+            renderPosts(posts, allPostsContainer);
+            renderSquads(squads, featuredSquadsContainer);
+            renderSquads(squads, allSquadsContainer);
+
+            // Set up event listeners
+            setupEventListeners();
+        });
+
+        // Set up all event listeners
+        function setupEventListeners() {
+            // Tab functionality
+            tabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    const tabId = tab.getAttribute('data-tab');
+                    switchTab(tabId);
+                });
+            });
+
+            // Create squad modal
+            createSquadBtn.addEventListener('click', () => {
+                createSquadModal.classList.add('active');
+            });
+
+            createSquadBtn2.addEventListener('click', () => {
+                createSquadModal.classList.add('active');
+            });
+
+            // Close modal buttons
+            closeModalButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    createSquadModal.classList.remove('active');
+                });
+            });
+
+            // Create squad form submission
+            createSquadForm.addEventListener('click', createNewSquad);
+
+            // Create post submission
+            submitPostBtn.addEventListener('click', createNewPost);
+
+            // Switch to posts tab when create post button is clicked
+            createPostBtn.addEventListener('click', () => {
+                switchTab('posts');
+            });
+
+            // Close modal when clicking outside
+            window.addEventListener('click', (e) => {
+                if (e.target === createSquadModal) {
+                    createSquadModal.classList.remove('active');
+                }
+            });
+        }
+
+        // Switch between tabs
+        function switchTab(tabId) {
+            // Update active tab
+            tabs.forEach(tab => {
+                if (tab.getAttribute('data-tab') === tabId) {
+                    tab.classList.add('active');
+                } else {
+                    tab.classList.remove('active');
+                }
+            });
+
+            // Update active tab content
+            tabContents.forEach(content => {
+                if (content.id === tabId) {
+                    content.classList.add('active');
+                } else {
+                    content.classList.remove('active');
+                }
+            });
+        }
+
+        // Create a new squad
+        function createNewSquad() {
+            const name = document.getElementById('squad-name').value;
+            const description = document.getElementById('squad-description').value;
+            const category = document.getElementById('squad-category').value;
+            const privacy = document.getElementById('squad-privacy').value;
+
+            if (!name || !description) {
+                alert('Please fill in all required fields.');
+                return;
+            }
+
+            const newSquad = {
+                id: squads.length + 1,
+                name: name,
+                description: description,
+                icon: getSquadIcon(category),
+                members: 1,
+                challenges: 0,
+                activity: 0,
+                category: category,
+                membersList: ["TJ"]
+            };
+
+            squads.push(newSquad);
+
+            // Update UI
+            renderSquads(squads, featuredSquadsContainer);
+            renderSquads(squads, allSquadsContainer);
+
+            // Close modal and reset form
+            createSquadModal.classList.remove('active');
+            document.getElementById('squad-name').value = '';
+            document.getElementById('squad-description').value = '';
+
+            // Show success message
+            alert(`Squad "${name}" created successfully!`);
+        }
+
+        // Get appropriate icon for squad based on category
+        function getSquadIcon(category) {
+            const icons = {
+                savings: "💰",
+                investing: "📈",
+                budgeting: "📊",
+                debt: "🎯",
+                general: "👥"
+            };
+            return icons[category] || "👥";
+        }
+
+        // Create a new post
+        function createNewPost() {
+            const title = document.getElementById('post-title').value;
+            const content = document.getElementById('post-content').value;
+
+            if (!title || !content) {
+                alert('Please fill in both title and content for your post.');
+                return;
+            }
+
+            const newPost = {
+                id: posts.length + 1,
+                author: {
+                    name: "Thabo Johnson",
+                    initials: "TJ",
+                    avatarColor: "linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)"
+                },
+                title: title,
+                content: content,
+                time: "Just now",
+                likes: 0,
+                comments: 0,
+                liked: false
+            };
+
+            posts.unshift(newPost); // Add to beginning of array
+
+            // Update UI
+            renderPosts(posts, recentPostsContainer);
+            renderPosts(posts, allPostsContainer);
+
+            // Reset form
+            document.getElementById('post-title').value = '';
+            document.getElementById('post-content').value = '';
+
+            // Show success message
+            alert('Your post has been published!');
+        }
+
+        // Render posts to the specified container
+        function renderPosts(postsArray, container) {
+            container.innerHTML = '';
+
+            postsArray.forEach(post => {
+                const postElement = document.createElement('div');
+                postElement.className = 'post-card';
+                postElement.innerHTML = `
+                    <div class="post-header">
+                        <div class="post-author">
+                            <div class="author-avatar" style="background: ${post.author.avatarColor}">${post.author.initials}</div>
+                            <div class="author-info">
+                                <div class="author-name">${post.author.name}</div>
+                                <div class="post-time">${post.time}</div>
+                            </div>
+                        </div>
+                        <div class="post-actions">
+                            <button class="action-btn"><i class="fas fa-ellipsis-h"></i></button>
+                        </div>
+                    </div>
+                    <div class="post-content">
+                        <h3 class="post-title">${post.title}</h3>
+                        <p class="post-text">${post.content}</p>
+                        <div class="post-stats">
+                            <span>${post.likes} likes</span>
+                            <span>${post.comments} comments</span>
+                        </div>
+                    </div>
+                    <div class="post-footer">
+                        <button class="reaction-btn ${post.liked ? 'active' : ''}" data-post-id="${post.id}">
+                            <i class="fas fa-thumbs-up"></i> Like
+                        </button>
+                        <button class="reaction-btn">
+                            <i class="fas fa-comment"></i> Comment
+                        </button>
+                        <button class="reaction-btn">
+                            <i class="fas fa-share"></i> Share
+                        </button>
+                    </div>
+                `;
+                container.appendChild(postElement);
+            });
+
+            // Add event listeners for like buttons
+            document.querySelectorAll('.reaction-btn').forEach(button => {
+                if (button.innerHTML.includes('fa-thumbs-up')) {
+                    button.addEventListener('click', toggleLike);
+                }
+            });
+        }
+
+        // Render squads to the specified container
+        function renderSquads(squadsArray, container) {
+            container.innerHTML = '';
+
+            squadsArray.forEach(squad => {
+                const squadElement = document.createElement('div');
+                squadElement.className = 'squad-card';
+                squadElement.innerHTML = `
+                    <div class="squad-header">
+                        <div class="squad-icon">${squad.icon}</div>
+                        <div class="squad-info">
+                            <h3>${squad.name}</h3>
+                            <p>${squad.description}</p>
+                        </div>
+                    </div>
+                    <div class="squad-stats">
+                        <div class="squad-stat">
+                            <span class="stat-value">${squad.members}</span>
+                            <span class="stat-label">Members</span>
+                        </div>
+                        <div class="squad-stat">
+                            <span class="stat-value">${squad.challenges}</span>
+                            <span class="stat-label">Challenges</span>
+                        </div>
+                        <div class="squad-stat">
+                            <span class="stat-value">${squad.activity}%</span>
+                            <span class="stat-label">Active</span>
+                        </div>
+                    </div>
+                    <div class="squad-members">
+                        ${squad.membersList.slice(0, 3).map(member => 
+                            `<div class="member-avatar">${member}</div>`
+                        ).join('')}
+                        ${squad.membersList.length > 3 ? 
+                            `<div class="member-more">+${squad.membersList.length - 3}</div>` : ''
+                        }
+                    </div>
+                    <button class="btn primary full-width join-squad-btn" data-squad-id="${squad.id}">
+                        ${squad.membersList.includes("TJ") ? "Joined" : "Join Squad"}
+                    </button>
+                `;
+                container.appendChild(squadElement);
+            });
+
+            // Add event listeners for join squad buttons
+            document.querySelectorAll('.join-squad-btn').forEach(button => {
+                button.addEventListener('click', joinSquad);
+            });
+        }
+
+        // Toggle like on a post
+        function toggleLike(e) {
+            const postId = parseInt(e.currentTarget.getAttribute('data-post-id'));
+            const post = posts.find(p => p.id === postId);
+            
+            if (post) {
+                if (post.liked) {
+                    post.likes--;
+                    post.liked = false;
+                    e.currentTarget.classList.remove('active');
+                } else {
+                    post.likes++;
+                    post.liked = true;
+                    e.currentTarget.classList.add('active');
+                }
+                
+                // Update the post stats
+                const postStats = e.currentTarget.closest('.post-card').querySelector('.post-stats');
+                postStats.querySelector('span').textContent = `${post.likes} likes`;
+                
+                // Update button text
+                e.currentTarget.innerHTML = `<i class="fas fa-thumbs-up"></i> Like`;
+            }
+        }
+
+        // Join or leave a squad
+        function joinSquad(e) {
+            const squadId = parseInt(e.currentTarget.getAttribute('data-squad-id'));
+            const squad = squads.find(s => s.id === squadId);
+            
+            if (squad) {
+                const userInSquad = squad.membersList.includes("TJ");
+                
+                if (userInSquad) {
+                    // Leave squad
+                    squad.membersList = squad.membersList.filter(member => member !== "TJ");
+                    squad.members--;
+                    e.currentTarget.textContent = "Join Squad";
+                    alert(`You've left the ${squad.name} squad.`);
+                } else {
+                    // Join squad
+                    squad.membersList.push("TJ");
+                    squad.members++;
+                    e.currentTarget.textContent = "Joined";
+                    alert(`You've joined the ${squad.name} squad!`);
+                }
+                
+                // Update the squad members display
+                const squadCard = e.currentTarget.closest('.squad-card');
+                const membersContainer = squadCard.querySelector('.squad-members');
+                const memberMore = membersContainer.querySelector('.member-more');
+                
+                if (squad.membersList.length > 3) {
+                    if (!memberMore) {
+                        membersContainer.innerHTML += `<div class="member-more">+${squad.membersList.length - 3}</div>`;
+                    } else {
+                        memberMore.textContent = `+${squad.membersList.length - 3}`;
+                    }
+                }
+                
+                // Update the members count in stats
+                const membersStat = squadCard.querySelector('.squad-stat:first-child .stat-value');
+                membersStat.textContent = squad.members;
+            }
+        }
+    </script>
+</body>
 </html>
