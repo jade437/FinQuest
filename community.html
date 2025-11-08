@@ -300,6 +300,7 @@
             margin-bottom: 2rem;
             border-bottom: 1px solid var(--border);
             padding-bottom: 0.5rem;
+            flex-wrap: wrap;
         }
 
         .tab {
@@ -424,6 +425,15 @@
         }
 
         .btn.danger:hover {
+            opacity: 0.9;
+        }
+
+        .btn.success {
+            background: var(--success);
+            color: white;
+        }
+
+        .btn.success:hover {
             opacity: 0.9;
         }
 
@@ -671,6 +681,249 @@
             color: white;
         }
 
+        /* Leaderboard Styles */
+        .leaderboard-section {
+            margin-bottom: 3rem;
+        }
+
+        .leaderboard-card {
+            background: var(--card);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            overflow: hidden;
+        }
+
+        .leaderboard-header {
+            display: grid;
+            grid-template-columns: 1fr auto auto;
+            padding: 1rem 1.5rem;
+            background-color: var(--light);
+            border-bottom: 1px solid var(--border);
+            font-weight: 600;
+            color: var(--text);
+        }
+
+        .leaderboard-list {
+            padding: 0;
+        }
+
+        .leaderboard-item {
+            display: grid;
+            grid-template-columns: auto 1fr auto auto;
+            align-items: center;
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid var(--border);
+            gap: 1rem;
+        }
+
+        .leaderboard-item:last-child {
+            border-bottom: none;
+        }
+
+        .leaderboard-item.first {
+            background: linear-gradient(to right, rgba(255, 215, 0, 0.05), transparent);
+        }
+
+        .leaderboard-item.second {
+            background: linear-gradient(to right, rgba(192, 192, 192, 0.05), transparent);
+        }
+
+        .leaderboard-item.third {
+            background: linear-gradient(to right, rgba(205, 127, 50, 0.05), transparent);
+        }
+
+        .leaderboard-item.current-user {
+            background: linear-gradient(to right, rgba(66, 153, 225, 0.08), transparent);
+            border-left: 4px solid var(--primary);
+        }
+
+        .rank {
+            font-weight: 700;
+            width: 2rem;
+            text-align: center;
+            color: var(--text);
+        }
+
+        .first .rank {
+            color: #d69e2e;
+        }
+
+        .second .rank {
+            color: #a0aec0;
+        }
+
+        .third .rank {
+            color: #ed8936;
+        }
+
+        .player-info {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .player-avatar {
+            width: 2.5rem;
+            height: 2.5rem;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .player-details .player-name {
+            font-weight: 600;
+            color: var(--text);
+        }
+
+        .player-details .player-title {
+            font-size: 0.8rem;
+            color: var(--text-light);
+        }
+
+        .player-level, .player-points {
+            font-weight: 600;
+            color: var(--text);
+        }
+
+        /* Milestones Section */
+        .milestones-section {
+            margin-bottom: 3rem;
+        }
+
+        .milestones-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .milestone-card {
+            background: var(--card);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .milestone-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+        }
+
+        .milestone-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            color: var(--primary);
+        }
+
+        .milestone-card h3 {
+            margin: 0 0 0.5rem 0;
+            color: var(--text);
+            font-size: 1.25rem;
+        }
+
+        .milestone-card p {
+            margin: 0 0 1.25rem 0;
+            color: var(--text-light);
+            font-size: 0.9rem;
+            line-height: 1.4;
+        }
+
+        .milestone-badge {
+            background: var(--success);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        /* Mentor Match Section */
+        .mentor-section {
+            margin-bottom: 3rem;
+        }
+
+        .mentor-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .mentor-card {
+            background: var(--card);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .mentor-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+        }
+
+        .mentor-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 700;
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .mentor-card h3 {
+            margin: 0 0 0.5rem 0;
+            color: var(--text);
+            font-size: 1.25rem;
+        }
+
+        .mentor-card .mentor-title {
+            margin: 0 0 0.75rem 0;
+            color: var(--primary);
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .mentor-card p {
+            margin: 0 0 1.25rem 0;
+            color: var(--text-light);
+            font-size: 0.9rem;
+            line-height: 1.4;
+        }
+
+        .mentor-expertise {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 1.25rem;
+            justify-content: center;
+        }
+
+        .expertise-tag {
+            background: var(--light);
+            color: var(--text);
+            padding: 0.25rem 0.5rem;
+            border-radius: 12px;
+            font-size: 0.75rem;
+        }
+
         /* Modal Styles */
         .modal {
             display: none;
@@ -747,7 +1000,7 @@
                 grid-template-columns: repeat(2, 1fr);
             }
 
-            .squads-grid {
+            .squads-grid, .milestones-grid, .mentor-grid {
                 grid-template-columns: 1fr;
             }
 
@@ -759,6 +1012,37 @@
 
             .community-tabs {
                 flex-wrap: wrap;
+            }
+
+            .leaderboard-header {
+                display: none;
+            }
+            
+            .leaderboard-item {
+                grid-template-columns: auto 1fr;
+                grid-template-areas: 
+                    "rank player"
+                    "level points";
+                gap: 0.5rem;
+                padding: 1rem;
+            }
+            
+            .rank {
+                grid-area: rank;
+            }
+            
+            .player-info {
+                grid-area: player;
+            }
+            
+            .player-level {
+                grid-area: level;
+                justify-self: start;
+            }
+            
+            .player-points {
+                grid-area: points;
+                justify-self: end;
             }
         }
     </style>
@@ -846,9 +1130,11 @@
                 <!-- Community Tabs -->
                 <div class="community-tabs">
                     <button class="tab active" data-tab="overview">Overview</button>
+                    <button class="tab" data-tab="squad-challenges">Squad Challenges</button>
+                    <button class="tab" data-tab="leaderboards">Leaderboards</button>
+                    <button class="tab" data-tab="milestones">Milestones</button>
+                    <button class="tab" data-tab="mentor-match">Mentor Match</button>
                     <button class="tab" data-tab="posts">Posts</button>
-                    <button class="tab" data-tab="squads">Squads</button>
-                    <button class="tab" data-tab="challenges">Challenges</button>
                 </div>
 
                 <!-- Overview Tab -->
@@ -889,6 +1175,77 @@
                     </section>
                 </div>
 
+                <!-- Squad Challenges Tab -->
+                <div class="tab-content" id="squad-challenges">
+                    <section class="squads-section">
+                        <div class="section-header">
+                            <h2>Squad Challenges</h2>
+                            <button class="btn primary" id="create-squad-btn-2">Create Squad</button>
+                        </div>
+                        
+                        <div class="squads-grid" id="squad-challenges-container">
+                            <!-- Squad challenges will be dynamically added here -->
+                        </div>
+                    </section>
+                </div>
+
+                <!-- Leaderboards Tab -->
+                <div class="tab-content" id="leaderboards">
+                    <section class="leaderboard-section">
+                        <h2>Savings Rate Leaderboard</h2>
+                        <div class="leaderboard-card">
+                            <div class="leaderboard-header">
+                                <span>Player</span>
+                                <span>Level</span>
+                                <span>Savings Rate</span>
+                            </div>
+                            <div class="leaderboard-list" id="savings-leaderboard">
+                                <!-- Leaderboard items will be dynamically added here -->
+                            </div>
+                        </div>
+                    </section>
+
+                    <section class="leaderboard-section">
+                        <h2>Financial Literacy Leaderboard</h2>
+                        <div class="leaderboard-card">
+                            <div class="leaderboard-header">
+                                <span>Player</span>
+                                <span>Level</span>
+                                <span>Literacy Score</span>
+                            </div>
+                            <div class="leaderboard-list" id="literacy-leaderboard">
+                                <!-- Leaderboard items will be dynamically added here -->
+                            </div>
+                        </div>
+                    </section>
+                </div>
+
+                <!-- Milestones Tab -->
+                <div class="tab-content" id="milestones">
+                    <section class="milestones-section">
+                        <div class="section-header">
+                            <h2>Shareable Milestones</h2>
+                            <p>Celebrate your financial achievements with the community</p>
+                        </div>
+                        <div class="milestones-grid" id="milestones-container">
+                            <!-- Milestones will be dynamically added here -->
+                        </div>
+                    </section>
+                </div>
+
+                <!-- Mentor Match Tab -->
+                <div class="tab-content" id="mentor-match">
+                    <section class="mentor-section">
+                        <div class="section-header">
+                            <h2>Mentor Match</h2>
+                            <p>Connect with successful entrepreneurs in African Bank's network</p>
+                        </div>
+                        <div class="mentor-grid" id="mentors-container">
+                            <!-- Mentors will be dynamically added here -->
+                        </div>
+                    </section>
+                </div>
+
                 <!-- Posts Tab -->
                 <div class="tab-content" id="posts">
                     <section class="posts-section">
@@ -898,69 +1255,6 @@
                         </div>
                         <div class="posts-container" id="all-posts-container">
                             <!-- All posts will be dynamically added here -->
-                        </div>
-                    </section>
-                </div>
-
-                <!-- Squads Tab -->
-                <div class="tab-content" id="squads">
-                    <section class="squads-section">
-                        <div class="section-header">
-                            <h2>All Squads</h2>
-                            <button class="btn primary" id="create-squad-btn-2">Create Squad</button>
-                        </div>
-                        <div class="squads-grid" id="all-squads-container">
-                            <!-- All squads will be dynamically added here -->
-                        </div>
-                    </section>
-                </div>
-
-                <!-- Challenges Tab -->
-                <div class="tab-content" id="challenges">
-                    <section class="squads-section">
-                        <h2>Community Challenges</h2>
-                        <div class="squads-grid">
-                            <div class="squad-card">
-                                <div class="squad-header">
-                                    <div class="squad-icon">💰</div>
-                                    <div class="squad-info">
-                                        <h3>Save R1 Million Challenge</h3>
-                                        <p>Community goal to collectively save R1 million</p>
-                                    </div>
-                                </div>
-                                <div class="squad-stats">
-                                    <div class="squad-stat">
-                                        <span class="stat-value">42%</span>
-                                        <span class="stat-label">Progress</span>
-                                    </div>
-                                    <div class="squad-stat">
-                                        <span class="stat-value">2,458</span>
-                                        <span class="stat-label">Participants</span>
-                                    </div>
-                                </div>
-                                <button class="btn primary full-width">Join Challenge</button>
-                            </div>
-
-                            <div class="squad-card">
-                                <div class="squad-header">
-                                    <div class="squad-icon">📈</div>
-                                    <div class="squad-info">
-                                        <h3>Financial Literacy Month</h3>
-                                        <p>Complete 5 financial literacy challenges this month</p>
-                                    </div>
-                                </div>
-                                <div class="squad-stats">
-                                    <div class="squad-stat">
-                                        <span class="stat-value">65%</span>
-                                        <span class="stat-label">Progress</span>
-                                    </div>
-                                    <div class="squad-stat">
-                                        <span class="stat-value">3,245</span>
-                                        <span class="stat-label">Participants</span>
-                                    </div>
-                                </div>
-                                <button class="btn primary full-width">Join Challenge</button>
-                            </div>
                         </div>
                     </section>
                 </div>
@@ -1010,7 +1304,7 @@
     </div>
 
     <script>
-        // Sample data for posts and squads
+        // Sample data for posts, squads, leaderboards, milestones, and mentors
         let posts = [
             {
                 id: 1,
@@ -1092,6 +1386,38 @@
             }
         ];
 
+        let savingsLeaderboard = [
+            { rank: 1, name: "Thabo S.", initials: "TS", title: "Financial Guru", level: "Level 8", points: "32%", isCurrentUser: false },
+            { rank: 2, name: "Nomsa M.", initials: "NM", title: "Savings Expert", level: "Level 7", points: "28%", isCurrentUser: false },
+            { rank: 3, name: "Lerato K.", initials: "LK", title: "Investment Whiz", level: "Level 7", points: "25%", isCurrentUser: false },
+            { rank: 4, name: "Peter M.", initials: "PM", title: "Budget Master", level: "Level 6", points: "22%", isCurrentUser: false },
+            { rank: 27, name: "Thabo J.", initials: "TJ", title: "Financial Builder", level: "Level 2", points: "15%", isCurrentUser: true }
+        ];
+
+        let literacyLeaderboard = [
+            { rank: 1, name: "Lerato K.", initials: "LK", title: "Investment Whiz", level: "Level 7", points: "98%", isCurrentUser: false },
+            { rank: 2, name: "Thabo S.", initials: "TS", title: "Financial Guru", level: "Level 8", points: "95%", isCurrentUser: false },
+            { rank: 3, name: "Nomsa M.", initials: "NM", title: "Savings Expert", level: "Level 7", points: "92%", isCurrentUser: false },
+            { rank: 4, name: "Peter M.", initials: "PM", title: "Budget Master", level: "Level 6", points: "88%", isCurrentUser: false },
+            { rank: 15, name: "Thabo J.", initials: "TJ", title: "Financial Builder", level: "Level 2", points: "75%", isCurrentUser: true }
+        ];
+
+        let milestones = [
+            { id: 1, title: "First R1000 Saved", description: "Celebrate reaching your first R1000 in savings", icon: "💰", achieved: true },
+            { id: 2, title: "Emergency Fund Complete", description: "Built a 3-month emergency fund", icon: "🛡️", achieved: false },
+            { id: 3, title: "Debt Free", description: "Paid off all high-interest debt", icon: "🎯", achieved: false },
+            { id: 4, title: "Investment Starter", description: "Made your first investment", icon: "📈", achieved: false },
+            { id: 5, title: "Budget Master", description: "Stuck to your budget for 3 consecutive months", icon: "📊", achieved: true },
+            { id: 6, title: "Financial Literacy Pro", description: "Completed all financial literacy modules", icon: "🎓", achieved: false }
+        ];
+
+        let mentors = [
+            { id: 1, name: "David O.", initials: "DO", title: "Tech Entrepreneur", bio: "Founded two successful tech startups. Specializes in scaling businesses and investment strategies.", expertise: ["Startups", "Investment", "Scaling"] },
+            { id: 2, name: "Sarah B.", initials: "SB", title: "Finance Director", bio: "15 years experience in corporate finance. Passionate about financial literacy for young professionals.", expertise: ["Corporate Finance", "Budgeting", "Investing"] },
+            { id: 3, name: "Michael T.", initials: "MT", title: "Small Business Coach", bio: "Helped over 100 small businesses achieve profitability. Focus on sustainable growth strategies.", expertise: ["Small Business", "Profitability", "Growth"] },
+            { id: 4, name: "Lisa K.", initials: "LK", title: "Investment Advisor", bio: "Specializes in helping young investors build diversified portfolios for long-term wealth.", expertise: ["Portfolio Management", "Wealth Building", "Diversification"] }
+        ];
+
         // DOM Elements
         const tabs = document.querySelectorAll('.tab');
         const tabContents = document.querySelectorAll('.tab-content');
@@ -1105,7 +1431,11 @@
         const recentPostsContainer = document.getElementById('recent-posts-container');
         const allPostsContainer = document.getElementById('all-posts-container');
         const featuredSquadsContainer = document.getElementById('featured-squads-container');
-        const allSquadsContainer = document.getElementById('all-squads-container');
+        const squadChallengesContainer = document.getElementById('squad-challenges-container');
+        const savingsLeaderboardContainer = document.getElementById('savings-leaderboard');
+        const literacyLeaderboardContainer = document.getElementById('literacy-leaderboard');
+        const milestonesContainer = document.getElementById('milestones-container');
+        const mentorsContainer = document.getElementById('mentors-container');
 
         // Initialize the page
         document.addEventListener('DOMContentLoaded', function() {
@@ -1113,7 +1443,11 @@
             renderPosts(posts, recentPostsContainer);
             renderPosts(posts, allPostsContainer);
             renderSquads(squads, featuredSquadsContainer);
-            renderSquads(squads, allSquadsContainer);
+            renderSquads(squads, squadChallengesContainer);
+            renderLeaderboard(savingsLeaderboard, savingsLeaderboardContainer);
+            renderLeaderboard(literacyLeaderboard, literacyLeaderboardContainer);
+            renderMilestones(milestones, milestonesContainer);
+            renderMentors(mentors, mentorsContainer);
 
             // Set up event listeners
             setupEventListeners();
@@ -1228,7 +1562,7 @@
 
             // Update UI
             renderSquads(squads, featuredSquadsContainer);
-            renderSquads(squads, allSquadsContainer);
+            renderSquads(squads, squadChallengesContainer);
 
             // Close modal and reset form
             createSquadModal.classList.remove('active');
@@ -1388,6 +1722,76 @@
             // Add event listeners for join squad buttons
             document.querySelectorAll('.join-squad-btn').forEach(button => {
                 button.addEventListener('click', joinSquad);
+            });
+        }
+
+        // Render leaderboard to the specified container
+        function renderLeaderboard(leaderboardData, container) {
+            container.innerHTML = '';
+
+            leaderboardData.forEach(player => {
+                const itemClass = player.rank <= 3 ? 
+                    `leaderboard-item ${player.rank === 1 ? 'first' : player.rank === 2 ? 'second' : 'third'}` :
+                    player.isCurrentUser ? 'leaderboard-item current-user' : 'leaderboard-item';
+                
+                const leaderboardItem = document.createElement('div');
+                leaderboardItem.className = itemClass;
+                leaderboardItem.innerHTML = `
+                    <div class="rank">${player.rank}</div>
+                    <div class="player-info">
+                        <div class="player-avatar">${player.initials}</div>
+                        <div class="player-details">
+                            <div class="player-name">${player.name}</div>
+                            <div class="player-title">${player.title}</div>
+                        </div>
+                    </div>
+                    <div class="player-level">${player.level}</div>
+                    <div class="player-points">${player.points}</div>
+                `;
+                container.appendChild(leaderboardItem);
+            });
+        }
+
+        // Render milestones to the specified container
+        function renderMilestones(milestonesData, container) {
+            container.innerHTML = '';
+
+            milestonesData.forEach(milestone => {
+                const milestoneElement = document.createElement('div');
+                milestoneElement.className = 'milestone-card';
+                milestoneElement.innerHTML = `
+                    <div class="milestone-icon">${milestone.icon}</div>
+                    <h3>${milestone.title}</h3>
+                    <p>${milestone.description}</p>
+                    ${milestone.achieved ? 
+                        '<div class="milestone-badge">Achieved!</div>' : 
+                        '<button class="btn outline">Share Progress</button>'
+                    }
+                `;
+                container.appendChild(milestoneElement);
+            });
+        }
+
+        // Render mentors to the specified container
+        function renderMentors(mentorsData, container) {
+            container.innerHTML = '';
+
+            mentorsData.forEach(mentor => {
+                const mentorElement = document.createElement('div');
+                mentorElement.className = 'mentor-card';
+                mentorElement.innerHTML = `
+                    <div class="mentor-avatar">${mentor.initials}</div>
+                    <h3>${mentor.name}</h3>
+                    <div class="mentor-title">${mentor.title}</div>
+                    <p>${mentor.bio}</p>
+                    <div class="mentor-expertise">
+                        ${mentor.expertise.map(skill => 
+                            `<span class="expertise-tag">${skill}</span>`
+                        ).join('')}
+                    </div>
+                    <button class="btn primary">Request Mentorship</button>
+                `;
+                container.appendChild(mentorElement);
             });
         }
 
